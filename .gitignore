@@ -1,0 +1,42 @@
+# OS Metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Node / Turborepo / Next.js
+node_modules/
+.pnpm-store/
+dist/
+.turbo/
+.next/
+out/
+build/
+*.tsbuildinfo
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Docker Local Storage
+pgdata/
+
+# Xcode & Apple Platforms
+apps/ios/*.xcodeproj/*
+!apps/ios/*.xcodeproj/project.pbxproj
+!apps/ios/*.xcodeproj/xcshareddata/
+apps/ios/*.xcodeproj/project.xcworkspace/*
+!apps/ios/*.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+apps/ios/*.xcworkspace/*
+!apps/ios/*.xcworkspace/contents.xcworkspacedata
+apps/ios/**/xcuserdata/
+DerivedData/
+.build/
+*.xcuserstate
+*.xcbkptlist
