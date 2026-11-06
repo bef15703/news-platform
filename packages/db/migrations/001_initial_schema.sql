@@ -15,7 +15,7 @@ CREATE TABLE raw_articles (
     published_at TIMESTAMPTZ NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     cluster_id UUID,
-    embedding VECTOR(1536)
+    embedding VECTOR(768)
 );
 
 -- Canonical entities registry. (Knowledge Graph Nodes)
