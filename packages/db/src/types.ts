@@ -1,6 +1,7 @@
 import { Generated, ColumnType } from "kysely";
 
 export type EventStatus = "draft" | "in_review" | "published" | "archived";
+
 export type EntityCategory =
   | "person"
   | "govt_branch"
@@ -10,7 +11,35 @@ export type EntityCategory =
   | "genre"
   | "topic";
 
-  export interface RawArticlesTable {
+export type BannerSeverity = "warning" | "info" | "critical";
+
+// --- Entity SDUI Profile Blocks Types ---
+
+export interface MetricItem {
+  label: string;
+  value: string;
+  subtext?: string;
+}
+
+export interface MetricStripBlock {
+  id: string;
+  type: "metric_strip";
+  title?: string;
+  items: MetricItem[];
+}
+
+export interface TakeawayListBlock {
+  id: string;
+  type: "takeaway_list";
+  title: string;
+  items: string[];
+}
+
+export type EntityProfileBlock = MetricStripBlock | TakeawayListBlock;
+
+// --- Database Table Definitions ---
+
+export interface RawArticlesTable {
   id: Generated<string>;
   source_id: string;
   source_name: string;
@@ -21,7 +50,7 @@ export type EntityCategory =
   published_at: ColumnType<Date, string | Date, string | Date>;
   created_at: Generated<Date>;
   cluster_id: string | null;
-  // Vector is stored as string representation "[0.1, -0.2, ...]" for pgvector
+  // Vector stored as string representation "[0.1, -0.2, ...]" for pgvector
   embedding: string | null;
 }
 
@@ -30,8 +59,25 @@ export interface EntitiesTable {
   slug: string;
   name: string;
   category: EntityCategory;
+
+  // Header & Portrait
+  title_role: Generated<string>;
+  avatar_url: string | null;
+  avatar_pos: Generated<string>;
+
+  // Structural Context Warning Banner
+  context_banner_title: string | null;
+  context_banner_body: string | null;
+  context_banner_severity: Generated<BannerSeverity>;
+  context_banner_active: Generated<boolean>;
+
+  // Modular Living Dossier Blocks (SDUI)
+  profile_blocks: ColumnType<EntityProfileBlock[], string | EntityProfileBlock[], string | EntityProfileBlock[]>;
+
+  // Metadata & Timestamps
   metadata: ColumnType<Record<string, unknown>, string, string>;
   created_at: Generated<Date>;
+  updated_at: Generated<Date>;
 }
 
 export interface EventsTable {
