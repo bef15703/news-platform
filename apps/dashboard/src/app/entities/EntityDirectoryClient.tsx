@@ -15,7 +15,6 @@ import {
   MapPin,
   Briefcase,
   Hash,
-  Loader2,
 } from "lucide-react";
 
 const CATEGORIES: Array<{ id: string; label: string; icon: any }> = [
@@ -73,13 +72,6 @@ export default function EntityDirectoryClient({
             ({entities.length} loaded)
           </span>
         </div>
-
-        {isPending && (
-          <div className="flex items-center gap-1.5 text-xs text-blue-400">
-            <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            <span>Updating...</span>
-          </div>
-        )}
       </header>
 
       {/* Main Container */}

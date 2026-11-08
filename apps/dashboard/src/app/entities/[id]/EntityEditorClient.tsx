@@ -221,7 +221,7 @@ export default function EntityEditorClient({
       <header className="h-14 border-b border-slate-800 px-6 flex items-center justify-between bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
         <div className="flex items-center gap-4">
           <Link
-            href="/entities/"
+            href="/entities"
             className="p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
