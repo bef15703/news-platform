@@ -3,6 +3,7 @@
 import React, { useState, useTransition } from "react";
 import Link from "next/link";
 import { IngestCluster, deleteCluster } from "./actions";
+import { triggerIngestPipeline, triggerClusterSynthesis } from "./pipeline-actions";
 import {
   Radio,
   Clock,
@@ -15,6 +16,7 @@ import {
   FileText,
   Loader2,
   ArrowRight,
+  RefreshCw,
 } from "lucide-react";
 
 export default function IngestTriageClient({
@@ -24,10 +26,15 @@ export default function IngestTriageClient({
 }) {
   const [clusters, setClusters] = useState<IngestCluster[]>(initialClusters);
   const [expandedId, setExpandedId] = useState<string | null>(
-    initialClusters[0]?.event_id || null
+    initialClusters[0]?.event_id || null,
   );
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  const [isPolling, setIsPolling] = useState(false);
+  const [pollStatus, setPollStatus] = useState<string | null>(null);
+  const [clusterStatus, setClusterStatus] = useState<string | null>(null);
+  const [synthesizingId, setSynthesizingId] = useState<string | null>(null);
 
   const toggleExpand = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
@@ -35,7 +42,7 @@ export default function IngestTriageClient({
 
   const handleDelete = async (eventId: string, title: string) => {
     const confirmed = confirm(
-      `Delete cluster: "${title}"?\n\nThis will remove all linked raw articles and prune any entities not referenced by other events.`
+      `Delete cluster: "${title}"?\n\nThis will remove all linked raw articles and prune any entities not referenced by other events.`,
     );
     if (!confirmed) return;
 
@@ -45,6 +52,43 @@ export default function IngestTriageClient({
       setClusters((prev) => prev.filter((c) => c.event_id !== eventId));
       setDeletingId(null);
     });
+  };
+
+  const handlePollAndCluster = async () => {
+    setIsPolling(true);
+    setPollStatus(null);
+    setClusterStatus(null);
+
+    const res = await triggerIngestPipeline();
+    if (res.success) {
+      setPollStatus(`+${res.inserted} new (${res.skipped} dupes)`);
+      setClusterStatus(`Embedded: ${res.processed} | New: ${res.newEvents} | Grouped: ${res.grouped}`);
+
+      if (res.clusters) {
+        setClusters(res.clusters);
+      }
+      setTimeout(() => setPollStatus(null), 6000);
+    } else {
+      alert(res.error || "Pipeline failed");
+    }
+    setIsPolling(false);
+  };
+
+  const handleSynthesize = async (eventId: string) => {
+    setSynthesizingId(eventId);
+    const res = await triggerClusterSynthesis(eventId);
+    if (res.success) {
+      setClusters((prev) =>
+        prev.map((c) =>
+          c.event_id === eventId
+            ? { ...c, is_synthesized: true, status: "in_review" }
+            : c,
+        ),
+      );
+    } else {
+      alert(res.error || "Synthesis failed");
+    }
+    setSynthesizingId(null);
   };
 
   return (
@@ -60,7 +104,7 @@ export default function IngestTriageClient({
             Wire Clusters
           </h1>
           <span className="text-xs text-slate-500 font-mono">
-            ({clusters.length} pending draft clusters)
+            ({clusters.length} active clusters)
           </span>
         </div>
 
@@ -70,6 +114,29 @@ export default function IngestTriageClient({
             <span>Updating queue...</span>
           </div>
         )}
+
+        <div className="flex items-center gap-3">
+          {pollStatus && (
+            <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-2 py-0.5 rounded">
+              {pollStatus}
+            </span>
+          )}
+          {clusterStatus && (
+            <span className="text-[11px] font-mono text-blue-400 bg-blue-950/60 border border-blue-800/40 px-2 py-0.5 rounded">
+              {clusterStatus}
+            </span>
+          )}
+
+          <button
+            type="button"
+            onClick={handlePollAndCluster}
+            disabled={isPolling}
+            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-all shadow-md shadow-blue-500/20 disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isPolling ? "animate-spin text-white" : "text-white"}`} />
+            {isPolling ? "Fetching & Clustering..." : "Poll Feeds"}
+          </button>
+        </div>
       </header>
 
       {/* Main Container */}
@@ -81,8 +148,7 @@ export default function IngestTriageClient({
               No Pending Clusters
             </h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              All ingested articles have been published or discarded. Run your
-              poller and clusterer worker to ingest new wire feeds.
+              All ingested articles have been published or discarded. Click &quot;Poll Feeds&quot; to ingest and cluster incoming wire feeds.
             </p>
           </div>
         ) : (
@@ -99,18 +165,15 @@ export default function IngestTriageClient({
                 <div className="p-5 flex items-start justify-between gap-4">
                   <div className="space-y-2 flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      {/* Priority Rank (#1 is highest volume) */}
                       <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold">
                         #{index + 1}
                       </span>
 
-                      {/* Coverage Pill */}
                       <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-950 text-blue-300 border border-blue-800/60 font-mono">
                         {cluster.article_count}{" "}
                         {cluster.article_count === 1 ? "article" : "articles"}
                       </span>
 
-                      {/* Synthesis State */}
                       {cluster.is_synthesized ? (
                         <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/40 font-semibold">
                           Deck Ready
@@ -121,7 +184,6 @@ export default function IngestTriageClient({
                         </span>
                       )}
 
-                      {/* Source Name Chips */}
                       {cluster.sources.map((src) => (
                         <span
                           key={src}
@@ -131,7 +193,6 @@ export default function IngestTriageClient({
                         </span>
                       ))}
 
-                      {/* Freshness Timestamp */}
                       <span className="text-[11px] text-slate-500 flex items-center gap-1 font-mono ml-auto">
                         <Clock className="w-3 h-3" />
                         {new Date(cluster.latest_published_at).toLocaleTimeString([], {
@@ -141,7 +202,6 @@ export default function IngestTriageClient({
                       </span>
                     </div>
 
-                    {/* Headline */}
                     <h2
                       onClick={() => toggleExpand(cluster.event_id)}
                       className="text-base font-bold text-white hover:text-blue-400 transition-colors cursor-pointer leading-snug line-clamp-2"
@@ -152,14 +212,34 @@ export default function IngestTriageClient({
 
                   {/* Actions Column */}
                   <div className="flex items-center gap-2 shrink-0 pt-1">
-                    <Link
-                      href={`/events/${cluster.event_id}`}
-                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-all shadow-md shadow-blue-500/20"
-                    >
-                      <Sparkles className="w-3.5 h-3.5" />
-                      Open Studio
-                      <ArrowRight className="w-3 h-3 ml-0.5" />
-                    </Link>
+                    {!cluster.is_synthesized ? (
+                      <button
+                        type="button"
+                        disabled={synthesizingId === cluster.event_id}
+                        onClick={() => handleSynthesize(cluster.event_id)}
+                        className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-all shadow-md shadow-blue-500/20 disabled:opacity-50"
+                      >
+                        {synthesizingId === cluster.event_id ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            Synthesizing...
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="w-3.5 h-3.5 text-blue-200" />
+                            Synthesize Deck
+                          </>
+                        )}
+                      </button>
+                    ) : (
+                      <Link
+                        href={`/events/${cluster.event_id}`}
+                        className="px-3 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-all"
+                      >
+                        Open Studio
+                        <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    )}
 
                     <button
                       type="button"
@@ -222,7 +302,6 @@ export default function IngestTriageClient({
                             )}
                           </div>
 
-                          {/* Direct External URL to original reporting */}
                           <a
                             href={art.canonical_url}
                             target="_blank"

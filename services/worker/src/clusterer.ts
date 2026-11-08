@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY || "",
+  apiKey: process.env.GEMINI_API_KEY || "",
 });
 
 export async function getSingleEmbedding(text: string): Promise<number[]> {
@@ -27,28 +27,28 @@ export async function getSingleEmbedding(text: string): Promise<number[]> {
   return values;
 }
 
-/**
- * Processes an array of texts concurrently using Promise.all
- * Ensures strict 1-to-1 order and vector count alignment.
- */
 export async function getBatchEmbeddings(texts: string[]): Promise<number[][]> {
   if (!process.env.GEMINI_API_KEY) {
-    throw new Error("GEMINI_API_KEY is not configured in services/worker/.env");
+    throw new Error("GEMINI_API_KEY is not configured in environment");
   }
 
   if (texts.length === 0) return [];
 
-  // Pipelined parallel execution
   return Promise.all(texts.map((text) => getSingleEmbedding(text)));
 }
 
 const BATCH_SIZE = 25;
-// Iterates through all un-embedded articles in batches until none remain.
-export async function clusterPendingArticles() {
+
+export async function clusterPendingArticles(): Promise<{
+  processed: number;
+  newEvents: number;
+  grouped: number;
+}> {
   let totalProcessed = 0;
+  let newEvents = 0;
+  let grouped = 0;
 
   while (true) {
-    // 1. Fetch the next batch of un-embedded articles
     const pendingArticles = await db
       .selectFrom("raw_articles")
       .select(["id", "title", "summary_raw", "published_at"])
@@ -57,35 +57,27 @@ export async function clusterPendingArticles() {
       .execute();
 
     if (pendingArticles.length === 0) {
-      if (totalProcessed === 0) {
-        console.log("No pending articles to embed or cluster.");
-      } else {
-        console.log(`\n🎉 Finished processing all pending articles! Total embedded: ${totalProcessed}`);
-      }
       break;
     }
-
-    console.log(`\nProcessing batch of ${pendingArticles.length} articles (Total so far: ${totalProcessed})...`);
 
     const textsToEmbed = pendingArticles.map(
       (a) => `${a.title}. ${a.summary_raw}`
     );
 
-    // Concurrently fetch embeddings for this batch
     const vectors = await getBatchEmbeddings(textsToEmbed);
 
     for (let i = 0; i < pendingArticles.length; i++) {
       const article = pendingArticles[i];
       const vectorString = `[${vectors[i].join(",")}]`;
 
-      // 2. Save vector to raw_articles
+      // 1. Save vector to raw_articles
       await sql`
         UPDATE raw_articles
         SET embedding = ${vectorString}::vector
         WHERE id = ${article.id}::uuid
       `.execute(db);
 
-      // 3. Search for matching cluster in a 36-hour sliding window
+      // 2. Search for matching cluster within a 36-hour sliding window
       const match = await sql<{ cluster_id: string; title: string; distance: number }>`
         SELECT cluster_id, title, (embedding <=> ${vectorString}::vector) AS distance
         FROM raw_articles
@@ -99,6 +91,7 @@ export async function clusterPendingArticles() {
 
       const nearest = match.rows[0];
 
+      // Distance threshold: 0.24 allows multi-source grouping
       if (nearest && nearest.distance < 0.18) {
         await db
           .updateTable("raw_articles")
@@ -106,12 +99,12 @@ export async function clusterPendingArticles() {
           .where("id", "=", article.id)
           .execute();
 
-        console.log(`🔗 Clustered: "${article.title.slice(0, 38)}..." -> "${nearest.title.slice(0, 38)}..." (d: ${nearest.distance.toFixed(4)})`);
+        grouped++;
       } else {
         const newEvent = await db
           .insertInto("events")
           .values({
-            title: article.title,
+            title: article.title.slice(0, 255),
             status: "draft",
             deck_json: JSON.stringify([]),
             article_markdown: "",
@@ -127,10 +120,12 @@ export async function clusterPendingArticles() {
           .where("id", "=", article.id)
           .execute();
 
-        console.log(`✨ Created Event: "${newEvent.title.slice(0, 42)}..."`);
+        newEvents++;
       }
     }
 
     totalProcessed += pendingArticles.length;
   }
+
+  return { processed: totalProcessed, newEvents, grouped };
 }

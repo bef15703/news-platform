@@ -25,11 +25,7 @@ export interface IngestCluster {
   articles: IngestArticle[];
 }
 
-/**
- * Fetch all unpromoted draft clusters, ordered by article volume descending.
- */
 export async function getIngestClusters(): Promise<IngestCluster[]> {
-  // 1. Fetch draft events grouped with raw article aggregates
   const clusterRows = await sql<{
     event_id: string;
     event_title: string;
@@ -51,7 +47,7 @@ export async function getIngestClusters(): Promise<IngestCluster[]> {
       MIN(ra.published_at) AS first_published_at
     FROM events e
     JOIN raw_articles ra ON ra.cluster_id = e.id
-    WHERE e.status = 'draft'
+    WHERE e.status IN ('draft', 'in_review')
     GROUP BY e.id, e.title, e.status, e.deck_json
     ORDER BY article_count DESC, latest_published_at DESC;
   `.execute(db);
@@ -60,7 +56,6 @@ export async function getIngestClusters(): Promise<IngestCluster[]> {
 
   const eventIds = clusterRows.rows.map((r) => r.event_id);
 
-  // 2. Fetch all raw articles belonging to these clusters
   const rawArticles = await db
     .selectFrom("raw_articles")
     .select([
@@ -106,12 +101,9 @@ export async function getIngestClusters(): Promise<IngestCluster[]> {
   });
 }
 
-/**
- * Deletes a cluster, its raw articles, and any entities tied ONLY to this event.
- */
 export async function deleteCluster(eventId: string) {
   await db.transaction().execute(async (trx) => {
-    // 1. Identify any entities linked to this event (if it was synthesized)
+    // 1. Find linked entities (if already synthesized)
     const linkedEntities = await trx
       .selectFrom("event_entities")
       .select("entity_id")
@@ -120,25 +112,25 @@ export async function deleteCluster(eventId: string) {
 
     const entityIds = linkedEntities.map((e) => e.entity_id);
 
-    // 2. Delete raw articles belonging to this cluster
+    // 2. Delete raw articles in cluster
     await trx
       .deleteFrom("raw_articles")
       .where("cluster_id", "=", eventId)
       .execute();
 
-    // 3. Delete event-entity junction records
+    // 3. Delete junction records
     await trx
       .deleteFrom("event_entities")
       .where("event_id", "=", eventId)
       .execute();
 
-    // 4. Delete the event itself
+    // 4. Delete the event record
     await trx
       .deleteFrom("events")
       .where("id", "=", eventId)
       .execute();
 
-    // 5. Prune orphan entities: only delete entities that have NO other linked events
+    // 5. Clean up orphan entities
     if (entityIds.length > 0) {
       await sql`
         DELETE FROM entities e
@@ -151,6 +143,7 @@ export async function deleteCluster(eventId: string) {
   });
 
   revalidatePath("/ingest");
+  revalidatePath("/");
   revalidatePath("/entities");
   return { success: true };
 }
