@@ -147,3 +147,25 @@ export async function deleteCluster(eventId: string) {
   revalidatePath("/entities");
   return { success: true };
 }
+
+export async function deleteMultipleClusters(eventIds: string[]) {
+  if (!eventIds.length) return { success: true, count: 0 };
+
+  await db.transaction().execute(async (trx) => {
+    // 1. Delete all raw articles belonging to these clusters
+    await trx
+      .deleteFrom("raw_articles")
+      .where("cluster_id", "in", eventIds)
+      .execute();
+
+    // 2. Delete the event draft rows (event_entities cascades automatically)
+    await trx
+      .deleteFrom("events")
+      .where("id", "in", eventIds)
+      .execute();
+  });
+
+  revalidatePath("/ingest");
+  revalidatePath("/");
+  return { success: true, count: eventIds.length };
+}
