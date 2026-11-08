@@ -3,7 +3,8 @@
 
 import { db, sql } from "@news-platform/db";
 import { revalidatePath } from "next/cache";
-import { EntityProfileBlock } from "@/lib/entityBlocks";
+import { EntityProfileBlock } from "@news-platform/db";
+import { searchWikipediaCandidates, fetchSummaryByArticleTitle, WikipediaCandidate } from "@/lib/wikipedia";
 
 export async function getEntityForEditor(entityId: string) {
   const entity = await db
@@ -19,6 +20,10 @@ export async function getEntityForEditor(entityId: string) {
     typeof entity.profile_blocks === "string"
       ? JSON.parse(entity.profile_blocks)
       : entity.profile_blocks || [];
+  
+  const metadata = typeof entity.metadata === "string" 
+    ? JSON.parse(entity.metadata) 
+    : entity.metadata || {};
 
   // Fetch recent stories linked to this entity
   const linkedEvents = await sql<{
@@ -39,6 +44,7 @@ export async function getEntityForEditor(entityId: string) {
     entity: {
       ...entity,
       profile_blocks: profileBlocks,
+      metadata: metadata,
     },
     linkedEvents: linkedEvents.rows,
   };
@@ -57,6 +63,7 @@ export async function updateEntity(
     context_banner_title: string;
     context_banner_body: string;
     profile_blocks: EntityProfileBlock[];
+    metadata?: Record<string, any>;
   }
 ) {
   await db
@@ -72,10 +79,34 @@ export async function updateEntity(
       context_banner_title: payload.context_banner_title,
       context_banner_body: payload.context_banner_body,
       profile_blocks: JSON.stringify(payload.profile_blocks) as any,
+      metadata: JSON.stringify(payload.metadata || {}) as any
     })
     .where("id", "=", entityId)
     .execute();
 
   revalidatePath(`/entities/${entityId}`);
   return { success: true };
+}
+
+export async function findWikipediaCandidates(params: {
+  name: string;
+  titleRole?: string;
+  category?: string;
+}) {
+  try {
+    const candidates = await searchWikipediaCandidates(params);
+    return { success: true, candidates };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Failed to search candidates." };
+  }
+}
+
+export async function applyWikipediaSelection(title: string) {
+  try {
+    const result = await fetchSummaryByArticleTitle(title);
+    if (!result) return { success: false, error: "Could not fetch summary." };
+    return { success: true, data: result };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Failed to load details." };
+  }
 }

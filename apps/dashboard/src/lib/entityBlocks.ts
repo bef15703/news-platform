@@ -1,44 +1,69 @@
-export interface MetricItem {
-  label: string;
-  value: string;
-  subtext?: string;
-}
+import {
+  EntityProfileBlock,
+  SocialPlatform,
+} from "@news-platform/db";
 
-export interface MetricStripBlock {
-  id: string;
-  type: "metric_strip";
-  title?: string;
-  items: MetricItem[];
-}
-
-export interface TakeawayListBlock {
-  id: string;
-  type: "takeaway_list";
-  title: string;
-  items: string[];
-}
-
-export type EntityProfileBlock = MetricStripBlock | TakeawayListBlock;
-
-// Helper to generate quick unique IDs for added blocks
-export function createDefaultBlock(type: "metric_strip" | "takeaway_list"): EntityProfileBlock {
+export function createDefaultBlock(
+  type: EntityProfileBlock["type"]
+): EntityProfileBlock {
   const id = `block_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
 
-  if (type === "metric_strip") {
-    return {
-      id,
-      type: "metric_strip",
-      title: "Key Metrics",
-      items: [
-        { label: "Role / Stat", value: "Primary Value", subtext: "Context or Source" },
-      ],
-    };
-  }
+  switch (type) {
+    case "text_card":
+      return {
+        id,
+        type: "text_card",
+        title: "",
+        body: "",
+      };
 
-  return {
-    id,
-    type: "takeaway_list",
-    title: "Key Takeaways",
-    items: ["First notable track record or context point..."],
-  };
+    case "stat_strip":
+      return {
+        id,
+        type: "stat_strip",
+        text: "",
+      };
+
+    case "bullet_list":
+      return {
+        id,
+        type: "bullet_list",
+        title: "",
+        items: [
+          ""
+        ],
+      };
+
+    case "fact_sheet":
+      return {
+        id,
+        type: "fact_sheet",
+        title: "",
+        pairs: [
+          { label: "", value: "" },
+        ],
+      };
+
+    case "social_links":
+      return {
+        id,
+        type: "social_links",
+        title: "Socials",
+        links: [
+          { platform: "x", url: "https://x.com/" },
+          { platform: "facebook", url: "https://facebook.com/" },
+          { platform: "instagram", url: "https://instagram.com/" },
+          { platform: "youtube", url: "https://youtube.com/" },
+        ],
+      };
+
+    case "image_caption":
+      return {
+        id,
+        type: "image_caption",
+        imageUrl: "",
+        caption: "",
+        altText: "",
+      };
+  }
 }

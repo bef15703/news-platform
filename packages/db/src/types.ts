@@ -15,27 +15,77 @@ export type BannerSeverity = "warning" | "info" | "critical";
 
 // --- Entity SDUI Profile Blocks Types ---
 
-export interface MetricItem {
-  label: string;
-  value: string;
-  subtext?: string;
-}
+export type SocialPlatform =
+  | "x"
+  | "facebook"
+  | "instagram"
+  | "youtube"
+  | "website"
+  | "threads"
+  | "bluesky"
+  | "tiktok"
+  | "snapchat";
 
-export interface MetricStripBlock {
+export interface TextCardBlock {
   id: string;
-  type: "metric_strip";
+  type: "text_card";
   title?: string;
-  items: MetricItem[];
+  body: string;
 }
 
-export interface TakeawayListBlock {
+export interface BulletListBlock {
   id: string;
-  type: "takeaway_list";
+  type: "bullet_list";
   title: string;
   items: string[];
 }
 
-export type EntityProfileBlock = MetricStripBlock | TakeawayListBlock;
+export interface StatStripBlock {
+  id: string;
+  type: "stat_strip";
+  text: string;
+  subtext?: string;
+}
+
+export interface FactSheetPair {
+  label: string;
+  value: string;
+}
+
+export interface FactSheetBlock {
+  id: string;
+  type: "fact_sheet";
+  title?: string;
+  pairs: FactSheetPair[];
+}
+
+export interface SocialLinkItem {
+  platform: SocialPlatform;
+  url: string;
+}
+
+export interface SocialLinksBlock {
+  id: string;
+  type: "social_links";
+  title?: string;
+  links: SocialLinkItem[];
+}
+
+export interface ImageCaptionBlock {
+  id: string;
+  type: "image_caption";
+  imageUrl: string;
+  caption?: string;
+  altText?: string;
+}
+
+export type EntityProfileBlock =
+  | TextCardBlock
+  | BulletListBlock
+  | StatStripBlock
+  | FactSheetBlock
+  | SocialLinksBlock
+  | ImageCaptionBlock;
 
 // --- Database Table Definitions ---
 
