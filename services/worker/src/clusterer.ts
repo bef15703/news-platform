@@ -92,7 +92,7 @@ export async function clusterPendingArticles(): Promise<{
       const nearest = match.rows[0];
 
       // Distance threshold: 0.24 allows multi-source grouping
-      if (nearest && nearest.distance < 0.18) {
+      if (nearest && nearest.distance < 0.24) {
         await db
           .updateTable("raw_articles")
           .set({ cluster_id: nearest.cluster_id })

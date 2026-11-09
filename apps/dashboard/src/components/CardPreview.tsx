@@ -62,7 +62,7 @@ export function CardPreview({
             style={{
               backgroundImage: `url(${
                 card.media_url ||
-                "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=800&q=80"
+                "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/US_Capitol_and_Grant_Memorial.JPG/960px-US_Capitol_and_Grant_Memorial.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
               })`,
               backgroundPosition: card.media_pos ? card.media_pos : "center",
             }}
@@ -84,7 +84,7 @@ export function CardPreview({
             <h3 className="font-bold text-base leading-tight mb-2">
               {card.headline || "Headline"}
             </h3>
-            <p className="text-xs text-white/90 leading-relaxed line-clamp-4">
+            <p className="text-xs text-white/90 leading-relaxed line-clamp-7">
               {card.body || "Card body text goes here..."}
             </p>
           </div>

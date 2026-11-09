@@ -131,7 +131,7 @@ export default function EntityDirectoryClient({
                   <tr>
                     <th className="py-3 px-4 font-semibold">Entity</th>
                     <th className="py-3 px-4 font-semibold">Category</th>
-                    <th className="py-3 px-4 font-semibold">Dossier Health</th>
+                    <th className="py-3 px-4 font-semibold">Page Health</th>
                     <th className="py-3 px-4 font-semibold text-center">
                       Blocks
                     </th>

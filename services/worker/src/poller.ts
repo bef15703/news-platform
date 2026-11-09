@@ -10,6 +10,9 @@ import {
 import { clusterPendingArticles } from "./clusterer.js";
 
 const parser = new Parser({
+  customFields: {
+    item: [["dc:date", "dcDate"]],
+  },
   headers: {
     "User-Agent": "CivicNewsEngine/1.0",
     Accept: "application/rss+xml, application/xml, text/xml; q=0.9, */*; q=0.8",
@@ -54,13 +57,19 @@ export async function pollFeed(source: FeedSource): Promise<{ inserted: number; 
     const rawXml = await response.text();
     const feed = await parser.parseString(rawXml);
 
-    for (const item of feed.items) {
+    // Cap at the latest 30 items per pass to prevent feed flooding
+    const itemsToProcess = (feed.items || []).slice(0, 30);
+
+    for (const item of itemsToProcess) {
       if (!item.link || !item.title) continue;
 
       const canonicalUrl = cleanCanonicalUrl(item.link);
       const urlHash = computeUrlHash(canonicalUrl);
       const cleanSummary = sanitizeSummary(item.contentSnippet || item.content || item.summary || "");
-      const pubDate = item.pubDate ? new Date(item.pubDate) : new Date();
+      
+      // Parse Dublin Core, ISO, or standard pubDate before fallback
+      const rawDate = item.isoDate || (item as any).dcDate || item.pubDate;
+      const pubDate = rawDate && !isNaN(Date.parse(rawDate)) ? new Date(rawDate) : new Date();
 
       try {
         const result = await db

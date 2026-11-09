@@ -401,7 +401,7 @@ export default function IngestTriageClient({
                         type="button"
                         disabled={synthesizingId === cluster.event_id}
                         onClick={() => handleSynthesize(cluster.event_id)}
-                        className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-all shadow-md shadow-blue-500/20 disabled:opacity-50"
+                        className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-all disabled:opacity-50"
                       >
                         {synthesizingId === cluster.event_id ? (
                           <>

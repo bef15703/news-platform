@@ -230,7 +230,7 @@ export default function EntityEditorClient({
             {entityId.slice(0, 8)}
           </span>
           <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Entity Dossier
+            Entity Page
           </span>
         </div>
 

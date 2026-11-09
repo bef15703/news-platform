@@ -57,14 +57,6 @@ export function GlobalNav() {
           })}
         </nav>
       </div>
-
-      {/* Quick Status Pill */}
-      <div className="flex items-center gap-3">
-        <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-slate-950 border border-slate-800 text-[11px] font-mono text-slate-400">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>Pipeline Online</span>
-        </div>
-      </div>
     </header>
   );
 }

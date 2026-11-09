@@ -161,7 +161,7 @@ export default async function EditorialDashboardPage() {
           >
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                Living Dossiers
+                Entities
               </span>
               <Layers className="w-4 h-4 text-indigo-400" />
             </div>
@@ -371,7 +371,7 @@ export default async function EditorialDashboardPage() {
               >
                 <div className="flex items-center gap-2">
                   <Layers className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>Living Dossier Directory</span>
+                  <span>Entity Directory</span>
                 </div>
                 <ArrowRight className="w-3.5 h-3.5 text-slate-600" />
               </Link>
