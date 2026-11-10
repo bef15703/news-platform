@@ -3,7 +3,6 @@
 import React, { useState, useTransition } from "react";
 import Link from "next/link";
 import { EntityListItem, getEntitiesList } from "./actions";
-import { EntityCategory } from "@news-platform/db";
 import {
   Search,
   AlertTriangle,
@@ -15,9 +14,10 @@ import {
   MapPin,
   Briefcase,
   Hash,
+  type LucideIcon,
 } from "lucide-react";
 
-const CATEGORIES: Array<{ id: string; label: string; icon: any }> = [
+const CATEGORIES: Array<{ id: string; label: string; icon: LucideIcon }> = [
   { id: "all", label: "All Entities", icon: Layers },
   { id: "person", label: "People", icon: User },
   { id: "govt_branch", label: "Govt Branches", icon: Landmark },
@@ -35,7 +35,7 @@ export default function EntityDirectoryClient({
   const [entities, setEntities] = useState<EntityListItem[]>(initialEntities);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const handleFilterChange = (newCategory: string, newSearch: string) => {
     startTransition(async () => {
@@ -121,7 +121,7 @@ export default function EntityDirectoryClient({
                 No entities found
               </p>
               <p className="text-xs text-slate-600">
-                Try loosening your search term or selecting "All Entities".
+                Try loosening your search term or selecting &quot;All Entities&quot;.
               </p>
             </div>
           ) : (
@@ -147,10 +147,10 @@ export default function EntityDirectoryClient({
                   {entities.map((item) => {
                     const hasAvatar = Boolean(item.avatar_url);
                     const hasBlocks = item.profile_blocks_count > 0;
-                    const badgeText = item.metadata?.badge_text;
-                    const badgeBg = item.metadata?.badge_bg_color || "#1e293b";
+                    const badgeText = typeof item.metadata?.badge_text === "string" ? item.metadata.badge_text : undefined;
+                    const badgeBg = typeof item.metadata?.badge_bg_color === "string" ? item.metadata.badge_bg_color : "#1e293b";
                     const badgeFont =
-                      item.metadata?.badge_font_color || "#ffffff";
+                      typeof item.metadata?.badge_font_color === "string" ? item.metadata.badge_font_color : "#ffffff";
 
                     return (
                       <tr

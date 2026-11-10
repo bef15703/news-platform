@@ -7,10 +7,8 @@ import {
   Layers,
   Sparkles,
   ArrowRight,
-  Clock,
   AlertTriangle,
   User,
-  ExternalLink,
   ChevronRight,
   TrendingUp,
 } from "lucide-react";

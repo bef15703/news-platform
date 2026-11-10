@@ -10,12 +10,12 @@
     "test:db": "tsx src/test-connection.ts"
   },
   "dependencies": {
-    "kysely": "^0.27.4",
+    "kysely": "^0.29.8",
     "pg": "^8.13.1"
   },
   "devDependencies": {
     "@types/pg": "^8.11.10",
     "tsx": "^4.23.15",
-    "typescript": "^5.6.0"
+    "typescript": "^5.9.3"
   }
 }

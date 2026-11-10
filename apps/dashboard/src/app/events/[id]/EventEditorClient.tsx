@@ -1,23 +1,44 @@
 "use client";
 
 import React, { useState } from "react";
-import { CardPreview } from "@/components/CardPreview";
-import { TEMPLATE_REGISTRY, CardTemplate } from "@/lib/templates";
+import { CardPreview, CardData } from "@/components/CardPreview";
+import { TEMPLATE_REGISTRY } from "@/lib/templates";
 import { updateEventDeck } from "./actions";
-import { ArrowLeft, Check, ExternalLink, Sparkles, Layers, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Check, ExternalLink, Layers, ShieldCheck } from "lucide-react";
 import Link from "next/link";
+
+interface SDUIBlock {
+  blockType?: string;
+  title?: string;
+  primaryValue?: string;
+  secondaryValue?: string;
+  [key: string]: unknown;
+}
 
 export default function EventEditorClient({
   initialData,
   eventId,
 }: {
-  initialData: any;
+  initialData: {
+    event: {
+      title: string;
+      status: string;
+      deck_json?: Record<string, unknown>[];
+      sdui_blocks?: Record<string, unknown>[];
+    };
+    entities: Array<{ id: string; name: string; category: string }>;
+    sources: Array<{ id: string; source_name: string; title: string; canonical_url: string }>;
+  };
   eventId: string;
 }) {
   const [eventTitle, setEventTitle] = useState(initialData.event.title);
   const [status, setStatus] = useState(initialData.event.status);
-  const [cards, setCards] = useState<any[]>(initialData.event.deck_json || []);
-  const [sduiBlocks, setSduiBlocks] = useState<any[]>(initialData.event.sdui_blocks || []);
+  const [cards, setCards] = useState<CardData[]>(
+    (initialData.event.deck_json as CardData[]) || [],
+  );
+  const [sduiBlocks] = useState<SDUIBlock[]>(
+    (initialData.event.sdui_blocks as SDUIBlock[]) || [],
+  );
   const [selectedCardIdx, setSelectedCardIdx] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -28,7 +49,7 @@ export default function EventEditorClient({
 
   const backHref = status === "draft" ? "/ingest" : "/";
 
-  const handleCardUpdate = (field: string, val: any) => {
+  const handleCardUpdate = (field: string, val: unknown) => {
     const updated = [...cards];
     updated[selectedCardIdx] = {
       ...updated[selectedCardIdx],
@@ -384,7 +405,7 @@ export default function EventEditorClient({
                 Linked Extracted Entities
               </h4>
               <div className="flex flex-wrap gap-1.5">
-                {initialData.entities.map((ent: any) => (
+                {initialData.entities.map((ent: { id: string; name: string; category: string }) => (
                   <span
                     key={ent.id}
                     className="text-xs px-2.5 py-1 bg-slate-800 text-slate-200 rounded-md border border-slate-700/60 flex items-center gap-1.5"
@@ -402,7 +423,7 @@ export default function EventEditorClient({
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Corroborated Wire Sources
               </h4>
               <div className="space-y-1.5">
-                {initialData.sources.map((s: any) => (
+                {initialData.sources.map((s: { id: string; source_name: string; title: string; canonical_url: string }) => (
                   <a
                     key={s.id}
                     href={s.canonical_url}

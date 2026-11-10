@@ -5,6 +5,7 @@ import {
   updateEntity,
   findWikipediaCandidates,
   applyWikipediaSelection,
+  type getEntityForEditor,
 } from "./actions";
 import {
   ArrowLeft,
@@ -15,10 +16,11 @@ import {
   Plus,
   Loader2,
   X,
+  type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { EntityBlockPreview } from "@/components/EntityBlockPreview";
-import { EntityProfileBlock } from "@news-platform/db";
+import { EntityProfileBlock, EntityCategory, BannerSeverity } from "@news-platform/db";
 import { EntityBlockControls } from "@/components/EntityBlockControls";
 import { createDefaultBlock } from "@/lib/entityBlocks";
 import { WikipediaCandidate } from "@/lib/wikipedia";
@@ -27,23 +29,25 @@ export default function EntityEditorClient({
   initialData,
   entityId,
 }: {
-  initialData: any;
+  initialData: NonNullable<Awaited<ReturnType<typeof getEntityForEditor>>>;
   entityId: string;
 }) {
   const [name, setName] = useState(initialData.entity.name || "");
   const [titleRole, setTitleRole] = useState(
     initialData.entity.title_role || "",
   );
-  const [category, setCategory] = useState(
-    initialData.entity.category || "person",
+  const [category, setCategory] = useState<EntityCategory>(
+    (initialData.entity.category as EntityCategory) || "person",
   );
-  const metadata = initialData.entity.metadata || {};
-  const [badgeText, setBadgeText] = useState(metadata.badge_text || "");
+  const metadata = (initialData.entity.metadata || {}) as Record<string, unknown>;
+  const [badgeText, setBadgeText] = useState(
+    typeof metadata.badge_text === "string" ? metadata.badge_text : "",
+  );
   const [badgeBgColor, setBadgeBgColor] = useState(
-    metadata.badge_bg_color || "#083A90",
+    typeof metadata.badge_bg_color === "string" ? metadata.badge_bg_color : "#083A90",
   );
   const [badgeFontColor, setBadgeFontColor] = useState(
-    metadata.badge_font_color || "#FFFFFF",
+    typeof metadata.badge_font_color === "string" ? metadata.badge_font_color : "#FFFFFF",
   );
   const [avatarUrl, setAvatarUrl] = useState(
     initialData.entity.avatar_url || "",
@@ -59,8 +63,8 @@ export default function EntityEditorClient({
   const [bannerActive, setBannerActive] = useState(
     Boolean(initialData.entity.context_banner_active),
   );
-  const [bannerSeverity, setBannerSeverity] = useState(
-    initialData.entity.context_banner_severity || "warning",
+  const [bannerSeverity, setBannerSeverity] = useState<BannerSeverity>(
+    (initialData.entity.context_banner_severity as BannerSeverity) || "warning",
   );
   const [bannerTitle, setBannerTitle] = useState(
     initialData.entity.context_banner_title || "",
@@ -88,7 +92,7 @@ export default function EntityEditorClient({
       context_banner_body: bannerBody,
       profile_blocks: profileBlocks,
       metadata: {
-        ...initialData.entity.metadata,
+        ...((initialData.entity.metadata || {}) as Record<string, unknown>),
         badge_text: badgeText.trim(),
         badge_font_color: badgeFontColor,
         badge_bg_color: badgeBgColor,
@@ -100,7 +104,7 @@ export default function EntityEditorClient({
     setTimeout(() => setSaveSuccess(false), 2500);
   };
 
-  const handleAddBlock = (type: any) => {
+  const handleAddBlock = (type: EntityProfileBlock["type"]) => {
     const newBlock = createDefaultBlock(type);
     setProfileBlocks([...profileBlocks, newBlock]);
   };
@@ -128,7 +132,7 @@ export default function EntityEditorClient({
   // Severity color styles for the mobile preview
   const severityStyles: Record<
     string,
-    { bg: string; border: string; text: string; icon: any }
+    { bg: string; border: string; text: string; icon: LucideIcon }
   > = {
     warning: {
       bg: "bg-amber-100",
@@ -343,7 +347,7 @@ export default function EntityEditorClient({
                     No events linked yet.
                   </p>
                 ) : (
-                  initialData.linkedEvents.slice(0, 3).map((ev: any) => (
+                  initialData.linkedEvents.slice(0, 3).map((ev: { id: string; title: string; status: string }) => (
                     <div
                       key={ev.id}
                       className="p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs space-y-1"
@@ -367,17 +371,28 @@ export default function EntityEditorClient({
           {/* Identity Box */}
           <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4">
             {/* 1-Click Autofill Button in Identity Box Header */}
-            <button
-              type="button"
-              onClick={handleStartAutofill}
-              disabled={isSearchingCandidates || !name.trim()}
-              className="px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-blue-300 hover:text-blue-200 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all disabled:opacity-30"
-            >
-              {isSearchingCandidates && (
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleStartAutofill}
+                disabled={isSearchingCandidates || !name.trim()}
+                className="px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-blue-300 hover:text-blue-200 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all disabled:opacity-30"
+              >
+                {isSearchingCandidates && (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                )}
+                Autofill Details
+              </button>
+              {autofillMessage && (
+                <span
+                  className={`text-xs ${
+                    autofillMessage.error ? "text-rose-400" : "text-emerald-400"
+                  }`}
+                >
+                  {autofillMessage.text}
+                </span>
               )}
-              Autofill Details
-            </button>
+            </div>
 
             {/* Disambiguation Modal */}
             {showPicker && (
@@ -392,7 +407,7 @@ export default function EntityEditorClient({
                       <p className="text-xs text-slate-400 mt-0.5">
                         Top results matching{" "}
                         <span className="text-blue-300 font-mono">
-                          "{name}"
+                          &quot;{name}&quot;
                         </span>
                       </p>
                     </div>
@@ -461,7 +476,7 @@ export default function EntityEditorClient({
                 </label>
                 <select
                   value={category}
-                  onChange={(e) => setCategory(e.target.value)}
+                  onChange={(e) => setCategory(e.target.value as EntityCategory)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
                 >
                   <option value="person">Person</option>
@@ -586,11 +601,11 @@ export default function EntityEditorClient({
                     Banner Severity
                   </label>
                   <div className="grid grid-cols-3 gap-2">
-                    {[
+                    {([
                       { id: "warning", label: "Warning (Yellow)" },
                       { id: "info", label: "Info (Blue)" },
                       { id: "critical", label: "Critical (Red)" },
-                    ].map((sev) => (
+                    ] as const).map((sev) => (
                       <button
                         key={sev.id}
                         type="button"
@@ -648,18 +663,18 @@ export default function EntityEditorClient({
 
             {/* Quick Add Buttons */}
             <div className="flex items-center gap-1.5 flex-wrap">
-              {[
+              {([
                 { type: "text_card", label: "Text Card" },
                 { type: "stat_strip", label: "Stat Strip" },
                 { type: "bullet_list", label: "Bullet List" },
                 { type: "fact_sheet", label: "Fact Sheet" },
                 { type: "social_links", label: "Socials" },
                 { type: "image_caption", label: "Image" },
-              ].map((b) => (
+              ] as const).map((b) => (
                 <button
                   key={b.type}
                   type="button"
-                  onClick={() => handleAddBlock(b.type as any)}
+                  onClick={() => handleAddBlock(b.type)}
                   className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-slate-200 border border-slate-700/80 flex items-center gap-1 transition-colors"
                 >
                   <Plus className="w-3 h-3 text-blue-400" /> {b.label}

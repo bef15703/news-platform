@@ -7,9 +7,6 @@ import {
   Compass,
   Radio,
   Layers,
-  Sparkles,
-  Database,
-  ExternalLink,
 } from "lucide-react";
 
 const NAV_ITEMS = [

@@ -9,7 +9,6 @@ import {
     FactSheetBlock,
     SocialLinksBlock,
     ImageCaptionBlock,
-    SocialPlatform,
 } from "@news-platform/db";
 import { SocialIcon } from "./SocialIcon";
 

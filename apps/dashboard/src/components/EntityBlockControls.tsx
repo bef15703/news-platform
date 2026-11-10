@@ -9,7 +9,7 @@ import {
     FactSheetBlock,
     SocialLinksBlock,
     ImageCaptionBlock,
-    SocialPlatform,
+    SocialPlatform
 } from "@news-platform/db";
 import { Trash2, ArrowUp, ArrowDown, Plus } from "lucide-react";
 
@@ -232,7 +232,7 @@ function FactSheetEditor({ block, onUpdate}: { block: FactSheetBlock; onUpdate: 
 function SocialLinksEditor({ block, onUpdate, }: { block: SocialLinksBlock; onUpdate: (b: SocialLinksBlock) => void; }) {
   const handleLinkChange = (idx: number, field: "platform" | "url", val: string) => {
     const next = [...block.links];
-    next[idx] = { ...next[idx], [field]: val } as any;
+    next[idx] = { ...next[idx], [field]: val } as { platform: SocialPlatform; url: string };
     onUpdate({ ...block, links: next });
   };
 

@@ -124,6 +124,7 @@ export async function synthesizeSingleEvent(eventId: string) {
         slug,
         name: safeName,
         category,
+        profile_blocks: JSON.stringify([]),
         metadata: JSON.stringify({ role: ent.roleOrContext || "" }),
       })
       .onConflict((oc) => oc.column("slug").doUpdateSet({ name: safeName }))
@@ -138,4 +139,28 @@ export async function synthesizeSingleEvent(eventId: string) {
   }
 
   return { success: true, title };
+}
+
+export async function synthesizePendingEvents(limit = 5) {
+  const pending = await db
+    .selectFrom("events as e")
+    .innerJoin("raw_articles as ra", "ra.cluster_id", "e.id")
+    .select(["e.id", sql<number>`count(ra.id)`.as("source_count")])
+    .where("e.status", "=", "draft")
+    .where(sql`jsonb_array_length(e.deck_json)`, "=", 0)
+    .groupBy("e.id")
+    .having(sql`count(ra.id)`, ">", 1)
+    .orderBy("source_count", "desc")
+    .limit(limit)
+    .execute();
+
+  console.log(`[Synthesizer] Found ${pending.length} multi-source events to synthesize (capped at ${limit}).`);
+  for (const ev of pending) {
+    try {
+      console.log(`Synthesizing event ${ev.id} (${ev.source_count} sources)...`);
+      await synthesizeSingleEvent(ev.id);
+    } catch (err) {
+      console.error(`Failed to synthesize event ${ev.id}:`, err);
+    }
+  }
 }

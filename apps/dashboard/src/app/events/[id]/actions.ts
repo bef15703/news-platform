@@ -1,7 +1,7 @@
 "server-only";
 "use server";
 
-import { db, sql } from "@news-platform/db";
+import { db, sql, EventStatus } from "@news-platform/db";
 import { revalidatePath } from "next/cache";
 
 export async function getEventForEditor(eventId: string) {
@@ -47,16 +47,16 @@ export async function updateEventDeck(
     eventId: string,
     payload: {
         title: string;
-        status: string;
-        deck_json: any[];
-        sdui_blocks: any[];
+        status: EventStatus | string;
+        deck_json: Record<string, unknown>[];
+        sdui_blocks: Record<string, unknown>[];
     }
 ) {
     await db
         .updateTable("events")
         .set({
             title: payload.title,
-            status: payload.status,
+            status: payload.status as EventStatus,
             deck_json: JSON.stringify(payload.deck_json),
             sdui_blocks: JSON.stringify(payload.sdui_blocks),
             updated_at: new Date(),

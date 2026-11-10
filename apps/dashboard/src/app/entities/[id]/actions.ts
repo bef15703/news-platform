@@ -1,10 +1,10 @@
 "server-only";
 "use server";
 
-import { db, sql } from "@news-platform/db";
+import { db, sql, EntityCategory, BannerSeverity } from "@news-platform/db";
 import { revalidatePath } from "next/cache";
 import { EntityProfileBlock } from "@news-platform/db";
-import { searchWikipediaCandidates, fetchSummaryByArticleTitle, WikipediaCandidate } from "@/lib/wikipedia";
+import { searchWikipediaCandidates, fetchSummaryByArticleTitle } from "@/lib/wikipedia";
 
 export async function getEntityForEditor(entityId: string) {
   const entity = await db
@@ -55,15 +55,15 @@ export async function updateEntity(
   payload: {
     name: string;
     title_role: string;
-    category: string;
+    category: EntityCategory | string;
     avatar_url: string | null;
     avatar_pos: string;
     context_banner_active: boolean;
-    context_banner_severity: string;
+    context_banner_severity: BannerSeverity | string;
     context_banner_title: string;
     context_banner_body: string;
     profile_blocks: EntityProfileBlock[];
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
   }
 ) {
   await db
@@ -71,15 +71,15 @@ export async function updateEntity(
     .set({
       name: payload.name,
       title_role: payload.title_role,
-      category: payload.category,
+      category: payload.category as EntityCategory,
       avatar_url: payload.avatar_url,
       avatar_pos: payload.avatar_pos,
       context_banner_active: payload.context_banner_active,
-      context_banner_severity: payload.context_banner_severity,
+      context_banner_severity: payload.context_banner_severity as BannerSeverity,
       context_banner_title: payload.context_banner_title,
       context_banner_body: payload.context_banner_body,
-      profile_blocks: JSON.stringify(payload.profile_blocks) as any,
-      metadata: JSON.stringify(payload.metadata || {}) as any
+      profile_blocks: JSON.stringify(payload.profile_blocks),
+      metadata: JSON.stringify(payload.metadata || {})
     })
     .where("id", "=", entityId)
     .execute();
@@ -96,8 +96,9 @@ export async function findWikipediaCandidates(params: {
   try {
     const candidates = await searchWikipediaCandidates(params);
     return { success: true, candidates };
-  } catch (err: any) {
-    return { success: false, error: err.message || "Failed to search candidates." };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to search candidates.";
+    return { success: false, error: message };
   }
 }
 
@@ -106,7 +107,8 @@ export async function applyWikipediaSelection(title: string) {
     const result = await fetchSummaryByArticleTitle(title);
     if (!result) return { success: false, error: "Could not fetch summary." };
     return { success: true, data: result };
-  } catch (err: any) {
-    return { success: false, error: err.message || "Failed to load details." };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to load details.";
+    return { success: false, error: message};
   }
 }

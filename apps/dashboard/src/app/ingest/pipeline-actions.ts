@@ -2,8 +2,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { pollAndClusterAllFeeds } from "../../../../../services/worker/src/poller.js";
-import { synthesizeSingleEvent } from "../../../../../services/worker/src/synthesizer.js";
+import { pollAndClusterAllFeeds } from "@news-platform/worker/poller";
+import { synthesizeSingleEvent } from "@news-platform/worker/synthesizer";
 import { getIngestClusters } from "./actions";
 
 export async function triggerIngestPipeline() {
@@ -14,10 +14,10 @@ export async function triggerIngestPipeline() {
 
     // Return fresh clusters for instant client-side state sync
     const freshClusters = await getIngestClusters();
-    return { success: true, clusters: freshClusters, ...result };
-  } catch (err: any) {
-    console.error("Ingest pipeline failed:", err);
-    return { success: false, error: err.message || "Pipeline execution failed." };
+    return { success: true as const, clusters: freshClusters, ...result };
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Pipeline execution failed.";
+    return { success: false as const, error: errorMessage };
   }
 }
 
@@ -26,9 +26,9 @@ export async function triggerClusterSynthesis(eventId: string) {
     await synthesizeSingleEvent(eventId);
     revalidatePath("/ingest");
     revalidatePath("/");
-    return { success: true };
-  } catch (err: any) {
-    console.error("Synthesis failed:", err);
-    return { success: false, error: err.message || "Synthesis failed." };
+    return { success: true as const };
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Synthesis failed.";
+    return { success: false as const, error: errorMessage };
   }
 }

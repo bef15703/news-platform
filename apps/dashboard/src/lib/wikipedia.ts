@@ -46,7 +46,7 @@ export async function searchWikipediaCandidates(params: {
   const json = await res.json();
   const searchResults = json?.query?.search || [];
 
-  return searchResults.map((r: any) => ({
+  return searchResults.map((r: { title: string; snippet: string; pageid: number }) => ({
     title: r.title,
     snippet: r.snippet.replace(/<[^>]+>/g, ""), // Strip HTML tags like <span class="searchmatch">
     pageid: r.pageid,

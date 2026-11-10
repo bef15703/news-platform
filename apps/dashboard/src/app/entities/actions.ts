@@ -3,7 +3,13 @@
 
 import { db, sql } from "@news-platform/db";
 import { EntityCategory } from "@news-platform/db";
-import { revalidatePath } from "next/cache";
+
+export interface EntityMetadata {
+  badge_text?: string;
+  badge_bg_color?: string;
+  badge_font_color?: string;
+  [key: string]: unknown;
+}
 
 export interface EntityListItem {
   id: string;
@@ -15,7 +21,7 @@ export interface EntityListItem {
   context_banner_active: boolean;
   context_banner_severity: string;
   profile_blocks_count: number;
-  metadata: Record<string, any>;
+  metadata: EntityMetadata;
   linked_events_count: number;
   updated_at: string;
 }
@@ -47,7 +53,7 @@ export async function getEntitiesList(params: {
       (eb) =>
         eb
           .selectFrom("event_entities as ee")
-          .select(eb.fn.count("ee.event_id").as("count"))
+          .select(sql<number>`count(ee.event_id)`.as("count"))
           .whereRef("ee.entity_id", "=", "e.id")
           .as("linked_events_count"),
     ]);

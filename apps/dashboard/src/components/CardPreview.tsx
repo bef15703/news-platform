@@ -4,11 +4,11 @@ import React from "react";
 import { TEMPLATE_REGISTRY, CardTemplate } from "@/lib/templates";
 import { LinkIcon } from "lucide-react";
 
-interface CardData {
-  order: number;
-  cardType: string;
-  headline: string;
-  body: string;
+export interface CardData {
+  order?: number;
+  cardType?: string;
+  headline?: string;
+  body?: string;
   badge?: string;
   footer?: string;
   template_id?: string;
@@ -20,6 +20,7 @@ interface CardData {
     bg?: string;
     textColor?: string;
   };
+  [key: string]: unknown;
 }
 
 function isShown(x?: string) {

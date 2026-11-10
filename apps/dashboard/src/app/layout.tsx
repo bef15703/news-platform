@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Merriweather, Inter } from "next/font/google";
+import { Merriweather } from "next/font/google";
 import "./globals.css";
 import { GlobalNav } from "@/components/GlobalNav";
 
-const inter = Inter({ subsets: ["latin"] });
 const merriweather = Merriweather({weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {

@@ -1,6 +1,5 @@
 import {
   EntityProfileBlock,
-  SocialPlatform,
 } from "@news-platform/db";
 
 export function createDefaultBlock(
