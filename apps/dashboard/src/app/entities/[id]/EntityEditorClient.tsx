@@ -19,6 +19,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { EntityBlockPreview } from "@/components/EntityBlockPreview";
 import { EntityProfileBlock, EntityCategory, BannerSeverity } from "@news-platform/db";
 import { EntityBlockControls } from "@/components/EntityBlockControls";
@@ -268,10 +269,12 @@ export default function EntityEditorClient({
             {/* Hero Image Container */}
             <div className="relative w-full aspect-[4/5] bg-slate-950 overflow-hidden shrink-0">
               {avatarUrl ? (
-                <img
+                <Image
                   src={avatarUrl}
                   alt={name}
-                  className="w-full h-full object-cover"
+                  sizes="320px"
+                  unoptimized
+                  className="object-cover"
                   style={{ objectPosition: avatarPos }}
                 />
               ) : (

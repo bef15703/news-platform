@@ -1,6 +1,7 @@
 import React from "react";
 import { db, sql } from "@news-platform/db";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Radio,
   FileCheck2,
@@ -319,10 +320,13 @@ export default async function EditorialDashboardPage() {
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div className="w-7 h-7 rounded-lg bg-slate-900 overflow-hidden shrink-0 flex items-center justify-center">
                         {ent.avatar_url ? (
-                          <img
+                          <Image
                             src={ent.avatar_url}
                             alt={ent.name}
-                            className="w-full h-full object-cover"
+                            fill
+                            sizes="28px"
+                            unoptimized
+                            className="object-cover"
                           />
                         ) : (
                           <User className="w-3.5 h-3.5 text-slate-600" />

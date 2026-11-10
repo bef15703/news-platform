@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { TEMPLATE_REGISTRY, CardTemplate } from "@/lib/templates";
 import { LinkIcon } from "lucide-react";
 
@@ -139,10 +140,12 @@ export function CardPreview({
           {/* Inline Media Slot */}
           {isShown(card.media_url).bool && (
             <div className="w-full h-36 bg-black/30 rounded-xl overflow-hidden relative border border-current/20 flex items-center justify-center mt-4 shrink-0">
-              <img
-                src={card.media_url}
+              <Image
+                src={card.media_url || "https://"}
                 alt={card.entityMentioned || "Actor"}
-                className="w-full h-full object-cover"
+                fill sizes="(max-width: 768px) 100vw, 400px"
+                unoptimized
+                className="object-cover"
                 style={{
                   objectPosition: card.media_pos ? card.media_pos : "center",
                 }}

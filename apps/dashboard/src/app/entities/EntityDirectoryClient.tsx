@@ -2,6 +2,7 @@
 
 import React, { useState, useTransition } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { EntityListItem, getEntitiesList } from "./actions";
 import {
   Search,
@@ -162,10 +163,13 @@ export default function EntityDirectoryClient({
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden shrink-0 flex items-center justify-center">
                               {item.avatar_url ? (
-                                <img
+                                <Image
                                   src={item.avatar_url}
                                   alt={item.name}
-                                  className="w-full h-full object-cover"
+                                  fill
+                                  sizes="40px"
+                                  unoptimized
+                                  className="object-cover"
                                 />
                               ) : (
                                 <User className="w-4 h-4 text-slate-600" />

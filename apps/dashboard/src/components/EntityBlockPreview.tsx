@@ -10,6 +10,7 @@ import {
     SocialLinksBlock,
     ImageCaptionBlock,
 } from "@news-platform/db";
+import Image from "next/image";
 import { SocialIcon } from "./SocialIcon";
 
 // Text Card Block
@@ -114,10 +115,13 @@ function ImageCaptionView({ block }: { block: ImageCaptionBlock }) {
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-sm text-left">
       {block.imageUrl ? (
-        <img
+        <Image
           src={block.imageUrl}
           alt={block.altText || "Entity graphic"}
-          className="w-full h-44 object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw, 400px"
+          unoptimized
+          className="object-cover"
         />
       ) : (
         <div className="w-full h-32 bg-slate-950 flex items-center justify-center text-slate-600 text-xs">
