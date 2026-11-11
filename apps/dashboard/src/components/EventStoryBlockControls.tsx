@@ -75,14 +75,12 @@ export function EventStoryBlockControls({
     onChange([...blocks, newBlock]);
   };
 
-  const updateBlock = (index: number, updated: SDUIBlock) => {
-    const next = [...blocks];
-    next[index] = updated;
-    onChange(next);
+  const updateBlock = (id: string, updated: SDUIBlock) => {
+    onChange(blocks.map((b) => (b.id === id ? updated : b)));
   };
 
-  const removeBlock = (index: number) => {
-    onChange(blocks.filter((_, i) => i !== index));
+  const removeBlock = (id: string) => {
+    onChange(blocks.filter((b) => b.id !== id));
   };
 
   const moveBlock = (index: number, direction: "up" | "down") => {
@@ -107,42 +105,42 @@ export function EventStoryBlockControls({
             onClick={() => addBlock("heading")}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
           >
-            <Heading className="w-3.5 h-3.5 text-blue-400" /> + Heading
+            <Heading className="w-3.5 h-3.5 text-blue-400" /> Heading
           </button>
           <button
             type="button"
             onClick={() => addBlock("paragraph")}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
           >
-            <AlignLeft className="w-3.5 h-3.5 text-slate-400" /> + Paragraph
+            <AlignLeft className="w-3.5 h-3.5 text-slate-400" /> Paragraph
           </button>
           <button
             type="button"
             onClick={() => addBlock("image")}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
           >
-            <ImageIcon className="w-3.5 h-3.5 text-emerald-400" /> + Photo
+            <ImageIcon className="w-3.5 h-3.5 text-emerald-400" /> Photo
           </button>
           <button
             type="button"
             onClick={() => addBlock("direct_quote_callout")}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
           >
-            <Quote className="w-3.5 h-3.5 text-amber-400" /> + Quote
+            <Quote className="w-3.5 h-3.5 text-amber-400" /> Quote
           </button>
           <button
             type="button"
             onClick={() => addBlock("data_chart")}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
           >
-            <BarChart2 className="w-3.5 h-3.5 text-purple-400" /> + Data Split
+            <BarChart2 className="w-3.5 h-3.5 text-purple-400" /> Data Split
           </button>
           <button
             type="button"
             onClick={() => addBlock("breaking_banner")}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
           >
-            <AlertTriangle className="w-3.5 h-3.5 text-red-400" /> + Context
+            <AlertTriangle className="w-3.5 h-3.5 text-red-400" /> Context
             Banner
           </button>
         </div>
@@ -193,7 +191,7 @@ export function EventStoryBlockControls({
                     </button>
                     <button
                       type="button"
-                      onClick={() => removeBlock(index)}
+                      onClick={() => removeBlock(block.id)}
                       className="p-1 hover:bg-red-950/60 text-slate-500 hover:text-red-400 rounded transition-colors ml-1"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -209,7 +207,7 @@ export function EventStoryBlockControls({
                       value={block.text}
                       placeholder="Section Heading..."
                       onChange={(e) =>
-                        updateBlock(index, { ...block, text: e.target.value })
+                        updateBlock(block.id, { ...block, text: e.target.value })
                       }
                       className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-sm font-semibold focus:outline-none focus:border-blue-500"
                     />
@@ -223,7 +221,7 @@ export function EventStoryBlockControls({
                       value={block.text}
                       placeholder="Write substantive reporting paragraph..."
                       onChange={(e) =>
-                        updateBlock(index, { ...block, text: e.target.value })
+                        updateBlock(block.id, { ...block, text: e.target.value })
                       }
                       className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-blue-500 leading-relaxed"
                     />
@@ -237,7 +235,7 @@ export function EventStoryBlockControls({
                       value={block.url}
                       placeholder="Image URL (https://...)"
                       onChange={(e) =>
-                        updateBlock(index, { ...block, url: e.target.value })
+                        updateBlock(block.id, { ...block, url: e.target.value })
                       }
                       className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs font-mono text-slate-300 focus:outline-none focus:border-blue-500"
                     />
@@ -247,7 +245,7 @@ export function EventStoryBlockControls({
                         value={block.caption || ""}
                         placeholder="Caption text"
                         onChange={(e) =>
-                          updateBlock(index, {
+                          updateBlock(block.id, {
                             ...block,
                             caption: e.target.value,
                           })
@@ -259,7 +257,7 @@ export function EventStoryBlockControls({
                         value={block.credit || ""}
                         placeholder="Photo Credit (e.g. AP / Getty)"
                         onChange={(e) =>
-                          updateBlock(index, {
+                          updateBlock(block.id, {
                             ...block,
                             credit: e.target.value,
                           })
@@ -277,7 +275,7 @@ export function EventStoryBlockControls({
                       value={block.quote}
                       placeholder="Quoted statement..."
                       onChange={(e) =>
-                        updateBlock(index, { ...block, quote: e.target.value })
+                        updateBlock(block.id, { ...block, quote: e.target.value })
                       }
                       className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-sm italic text-slate-200"
                     />
@@ -287,7 +285,7 @@ export function EventStoryBlockControls({
                         value={block.speaker}
                         placeholder="Speaker Name"
                         onChange={(e) =>
-                          updateBlock(index, {
+                          updateBlock(block.id, {
                             ...block,
                             speaker: e.target.value,
                           })
@@ -299,7 +297,7 @@ export function EventStoryBlockControls({
                         value={block.role || ""}
                         placeholder="Speaker Title / Role"
                         onChange={(e) =>
-                          updateBlock(index, { ...block, role: e.target.value })
+                          updateBlock(block.id, { ...block, role: e.target.value })
                         }
                         className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-300"
                       />
@@ -314,7 +312,7 @@ export function EventStoryBlockControls({
                       value={block.title}
                       placeholder="Chart Headline"
                       onChange={(e) =>
-                        updateBlock(index, { ...block, title: e.target.value })
+                        updateBlock(block.id, { ...block, title: e.target.value })
                       }
                       className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-200 font-semibold"
                     />
@@ -325,7 +323,7 @@ export function EventStoryBlockControls({
                           value={block.primaryLabel}
                           placeholder="Label A"
                           onChange={(e) =>
-                            updateBlock(index, {
+                            updateBlock(block.id, {
                               ...block,
                               primaryLabel: e.target.value,
                             })
@@ -336,7 +334,7 @@ export function EventStoryBlockControls({
                           type="number"
                           value={block.primaryValue}
                           onChange={(e) =>
-                            updateBlock(index, {
+                            updateBlock(block.id, {
                               ...block,
                               primaryValue: Number(e.target.value),
                             })
@@ -350,7 +348,7 @@ export function EventStoryBlockControls({
                           value={block.secondaryLabel}
                           placeholder="Label B"
                           onChange={(e) =>
-                            updateBlock(index, {
+                            updateBlock(block.id, {
                               ...block,
                               secondaryLabel: e.target.value,
                             })
@@ -361,7 +359,7 @@ export function EventStoryBlockControls({
                           type="number"
                           value={block.secondaryValue}
                           onChange={(e) =>
-                            updateBlock(index, {
+                            updateBlock(block.id, {
                               ...block,
                               secondaryValue: Number(e.target.value),
                             })
@@ -380,12 +378,9 @@ export function EventStoryBlockControls({
                       value={block.title || ""}
                       placeholder="Alert banner text..."
                       onChange={(e) =>
-                        updateBlock(index, {
-                          id: block.id,
-                          type: "breaking_banner",
+                        updateBlock(block.id, {
+                          ...block,
                           title: e.target.value,
-                          severity: block.severity || "urgent",
-                          dismissible: block.dismissible ?? true,
                         })
                       }
                       className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
@@ -393,15 +388,12 @@ export function EventStoryBlockControls({
                     <select
                       value={block.severity || "urgent"}
                       onChange={(e) =>
-                        updateBlock(index, {
-                          id: block.id,
-                          type: "breaking_banner",
-                          title: block.title || "",
+                        updateBlock(block.id, {
+                          ...block,
                           severity: e.target.value as
                             | "urgent"
                             | "developing"
                             | "update",
-                          dismissible: block.dismissible ?? true,
                         })
                       }
                       className="bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-blue-500"
