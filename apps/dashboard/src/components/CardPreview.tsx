@@ -53,7 +53,7 @@ export function CardPreview({
       onClick={onClick}
       style={{ backgroundColor: bg, color: textColor }}
       className={`relative w-[280px] h-[497px] rounded-3xl overflow-hidden shadow-2xl flex flex-col justify-between p-6 cursor-pointer transition-all duration-200 select-none ${
-        isSelected ? "ring-4 ring-blue-500 scale-[1.02]" : "hover:scale-[1.01]"
+        isSelected ? "ring-4 ring-brand scale-[1.02]" : "hover:scale-[1.01]"
       }`}
     >
       {/* Photo Hero Variant */}

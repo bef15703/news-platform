@@ -221,20 +221,20 @@ export default function EntityEditorClient({
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-canvas text-content-primary flex flex-col">
       {/* Top Bar */}
-      <header className="h-14 border-b border-slate-800 px-6 flex items-center justify-between bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+      <header className="h-14 border-b border-border-subtle px-6 flex items-center justify-between bg-surface/50 backdrop-blur-md sticky top-0 z-50">
         <div className="flex items-center gap-4">
           <Link
             href="/entities"
-            className="p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors"
+            className="p-1.5 hover:bg-elevated rounded-lg text-content-secondary hover:text-content-primary transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+          <span className="text-xs font-mono px-2 py-0.5 rounded bg-elevated text-content-secondary">
             {entityId.slice(0, 8)}
           </span>
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-content-secondary">
             Entity Page
           </span>
         </div>
@@ -249,7 +249,7 @@ export default function EntityEditorClient({
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg transition-all shadow-lg shadow-blue-500/20"
+            className="px-4 py-1.5 bg-brand hover:bg-brand-hover text-white text-xs font-bold rounded-lg transition-all"
           >
             Save Changes
           </button>
@@ -259,15 +259,15 @@ export default function EntityEditorClient({
       {/* Split Workspace */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Column: Mobile Viewport Emulator */}
-        <div className="w-[480px] border-r border-slate-800/80 bg-slate-900/20 flex flex-col items-center justify-start py-8 px-6 overflow-y-auto">
-          <div className="text-xs font-medium text-slate-400 mb-4 uppercase tracking-wider">
+        <div className="w-[480px] border-r border-border-subtle bg-surface/40 flex flex-col items-center justify-start py-8 px-6 overflow-y-auto">
+          <div className="text-xs font-medium text-content-secondary mb-4 uppercase tracking-wider">
             Mobile Entity Profile Preview
           </div>
 
           {/* Phone Shell */}
-          <div className="w-[320px] bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 flex flex-col">
+          <div className="w-[320px] bg-surface rounded-3xl overflow-hidden shadow-2xl border border-border-subtle flex flex-col">
             {/* Hero Image Container */}
-            <div className="relative w-full aspect-[4/5] bg-slate-950 overflow-hidden shrink-0">
+            <div className="relative w-full aspect-[4/5] bg-canvas overflow-hidden shrink-0">
               {avatarUrl ? (
                 <Image
                   src={avatarUrl}
@@ -279,11 +279,11 @@ export default function EntityEditorClient({
                   style={{ objectPosition: avatarPos }}
                 />
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-slate-600">
+                <div className="w-full h-full flex flex-col items-center justify-center text-content-muted">
                   <span className="text-xs">No portrait assigned</span>
                 </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
               {/* Identity Row with Badge */}
               <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-2">
@@ -291,7 +291,7 @@ export default function EntityEditorClient({
                   <h2 className="text-lg font-black text-white leading-tight">
                     {name || "Entity Name"}
                   </h2>
-                  <p className="text-xs font-medium text-slate-300 mt-0.5">
+                  <p className="text-xs font-medium text-white mt-0.5">
                     {titleRole || "Official Role / Title"}
                   </p>
                 </div>
@@ -332,7 +332,7 @@ export default function EntityEditorClient({
 
               {/* Modular Profile Blocks (Section 2 & Section 3) */}
               {profileBlocks.length === 0 ? (
-                <div className="p-4 border border-dashed border-slate-800 rounded-xl text-center text-slate-600 text-xs">
+                <div className="p-4 border border-dashed border-border-subtle rounded-xl text-center text-content-muted text-xs">
                   No modular blocks added yet.
                 </div>
               ) : (
@@ -342,24 +342,24 @@ export default function EntityEditorClient({
               )}
 
               {/* Feed Preview (Section 4: Automated Linked Stories) */}
-              <div className="space-y-2 pt-2 border-t border-slate-800/80">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <div className="space-y-2 pt-2 border-t border-border-subtle">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-content-secondary">
                   Linked Stories ({initialData.linkedEvents.length})
                 </div>
                 {initialData.linkedEvents.length === 0 ? (
-                  <p className="text-xs text-slate-500 italic">
+                  <p className="text-xs text-content-muted italic">
                     No events linked yet.
                   </p>
                 ) : (
                   initialData.linkedEvents.slice(0, 3).map((ev: { id: string; title: string; status: string }) => (
                     <div
                       key={ev.id}
-                      className="p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs space-y-1"
+                      className="p-2.5 bg-canvas border border-border-subtle rounded-xl text-xs space-y-1"
                     >
-                      <span className="font-semibold text-slate-200 line-clamp-1">
+                      <span className="font-semibold text-content-primary line-clamp-1">
                         {ev.title}
                       </span>
-                      <span className="text-[10px] text-slate-500 uppercase font-mono">
+                      <span className="text-[10px] text-content-muted uppercase font-mono">
                         {ev.status}
                       </span>
                     </div>
@@ -373,14 +373,14 @@ export default function EntityEditorClient({
         {/* Right Column: Editorial Controls */}
         <div className="flex-1 overflow-y-auto p-8 space-y-8 max-w-3xl">
           {/* Identity Box */}
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <div className="bg-surface border border-border-subtle rounded-2xl p-6 space-y-4">
             {/* 1-Click Autofill Button in Identity Box Header */}
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={handleStartAutofill}
                 disabled={isSearchingCandidates || !name.trim()}
-                className="px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-blue-300 hover:text-blue-200 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all disabled:opacity-30"
+                className="px-3 py-1.5 bg-brand/10 hover:bg-brand/20 border border-brand/40 text-brand text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all disabled:opacity-30"
               >
                 {isSearchingCandidates && (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -401,23 +401,23 @@ export default function EntityEditorClient({
             {/* Disambiguation Modal */}
             {showPicker && (
               <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
+                <div className="bg-surface border border-border-subtle rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
                   {/* Modal Header */}
-                  <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+                  <div className="p-4 border-b border-border-subtle flex items-center justify-between">
                     <div>
-                      <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                      <h3 className="text-sm font-bold text-content-primary flex items-center gap-2">
                         Select Matching Wikipedia Entry
                       </h3>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <p className="text-xs text-content-secondary mt-0.5">
                         Top results matching{" "}
-                        <span className="text-blue-300 font-mono">
+                        <span className="text-brand font-mono">
                           &quot;{name}&quot;
                         </span>
                       </p>
                     </div>
                     <button
                       onClick={() => setShowPicker(false)}
-                      className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800"
+                      className="text-content-secondary hover:text-content-primary p-1 rounded-lg hover:bg-elevated"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -431,17 +431,17 @@ export default function EntityEditorClient({
                         type="button"
                         disabled={isApplying}
                         onClick={() => handleSelectCandidate(c.title)}
-                        className="w-full text-left p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:bg-blue-950/30 hover:border-blue-700/60 transition-all group disabled:opacity-50"
+                        className="w-full text-left p-3.5 rounded-xl border border-border-subtle bg-canvas hover:bg-elevated hover:border-border-strong transition-all group disabled:opacity-50"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-slate-200 group-hover:text-blue-300">
+                          <span className="text-xs font-bold text-content-primary group-hover:text-brand">
                             {c.title}
                           </span>
-                          <span className="text-[10px] text-blue-400 opacity-0 group-hover:opacity-100 font-semibold transition-opacity">
+                          <span className="text-[10px] text-brand opacity-0 group-hover:opacity-100 font-semibold transition-opacity">
                             Select →
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-400 line-clamp-2 mt-1 leading-relaxed">
+                        <p className="text-[11px] text-content-secondary line-clamp-2 mt-1 leading-relaxed">
                           {c.snippet}...
                         </p>
                       </button>
@@ -449,11 +449,11 @@ export default function EntityEditorClient({
                   </div>
 
                   {/* Modal Footer */}
-                  <div className="p-3 bg-slate-950/60 border-t border-slate-800 text-right">
+                  <div className="p-3 bg-canvas/60 border-t border-border-subtle text-right">
                     <button
                       type="button"
                       onClick={() => setShowPicker(false)}
-                      className="px-3 py-1.5 text-xs text-slate-400 hover:text-white"
+                      className="px-3 py-1.5 text-xs text-content-secondary hover:text-content-primary"
                     >
                       Cancel
                     </button>
@@ -463,25 +463,25 @@ export default function EntityEditorClient({
             )}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-400">
+                <label className="text-xs font-medium text-content-secondary">
                   Full Name
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-content-primary focus:outline-none focus:border-border-strong"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-400">
+                <label className="text-xs font-medium text-content-secondary">
                   Category
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value as EntityCategory)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-content-primary focus:outline-none focus:border-border-strong"
                 >
                   <option value="person">Person</option>
                   <option value="govt_branch">Government Branch</option>
@@ -494,7 +494,7 @@ export default function EntityEditorClient({
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400">
+              <label className="text-xs font-medium text-content-secondary">
                 Official Title / Subtitle
               </label>
               <input
@@ -502,11 +502,11 @@ export default function EntityEditorClient({
                 placeholder="e.g. U.S. Attorney General"
                 value={titleRole}
                 onChange={(e) => setTitleRole(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-content-primary focus:outline-none focus:border-border-strong"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400">
+              <label className="text-xs font-medium text-content-secondary">
                 Badge
               </label>
               <div className="flex space-x-2">
@@ -514,26 +514,26 @@ export default function EntityEditorClient({
                   type="color"
                   value={badgeBgColor}
                   onChange={(e) => setBadgeBgColor(e.target.value)}
-                  className="w-10 h-10 rounded-lg border border-slate-800 bg-transparent cursor-pointer shrink-0 p-0.5"
+                  className="w-10 h-10 rounded-lg border border-border-subtle bg-transparent cursor-pointer shrink-0 p-0.5"
                 />
                 <input
                   type="color"
                   value={badgeFontColor}
                   onChange={(e) => setBadgeFontColor(e.target.value)}
-                  className="w-10 h-10 rounded-lg border border-slate-800 bg-transparent cursor-pointer shrink-0 p-0.5"
+                  className="w-10 h-10 rounded-lg border border-border-subtle bg-transparent cursor-pointer shrink-0 p-0.5"
                 />
                 <input
                   type="text"
                   placeholder="D-VA"
                   value={badgeText}
                   onChange={(e) => setBadgeText(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-content-primary focus:outline-none focus:border-border-strong"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-400">
+              <label className="text-xs font-medium text-content-secondary">
                 Portrait Image URL
               </label>
               <input
@@ -541,7 +541,7 @@ export default function EntityEditorClient({
                 placeholder="https://..."
                 value={avatarUrl}
                 onChange={(e) => setAvatarUrl(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-blue-500"
+                className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-xs font-mono text-content-primary focus:outline-none focus:border-border-strong"
               />
             </div>
 
@@ -559,8 +559,8 @@ export default function EntityEditorClient({
                   onClick={() => setAvatarPos(pos.val)}
                   className={`px-2 py-0.5 text-[10px] font-mono rounded border transition-colors ${
                     avatarPos === pos.val
-                      ? "bg-blue-600 border-blue-500 text-white"
-                      : "bg-slate-950 border-slate-800 text-slate-400 hover:text-white"
+                      ? "bg-brand border-brand text-white"
+                      : "bg-elevated border-border-subtle text-content-secondary hover:text-content-primary"
                   }`}
                 >
                   {pos.label}
@@ -570,13 +570,13 @@ export default function EntityEditorClient({
           </div>
 
           {/* Context Warning Banner Controls */}
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-5">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div className="bg-surface border border-border-subtle rounded-2xl p-6 space-y-5">
+            <div className="flex items-center justify-between border-b border-border-subtle pb-3">
               <div>
-                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-content-secondary">
                   Context Warning Banner
                 </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-content-muted mt-0.5">
                   Displays a prominent alert banner at the top of the entity
                   page on iOS.
                 </p>
@@ -587,7 +587,7 @@ export default function EntityEditorClient({
                 type="button"
                 onClick={() => setBannerActive(!bannerActive)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  bannerActive ? "bg-blue-600" : "bg-slate-800"
+                  bannerActive ? "bg-brand" : "bg-elevated"
                 }`}
               >
                 <span
@@ -601,7 +601,7 @@ export default function EntityEditorClient({
             {bannerActive && (
               <div className="space-y-4 pt-1">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-400">
+                  <label className="text-xs font-medium text-content-secondary">
                     Banner Severity
                   </label>
                   <div className="grid grid-cols-3 gap-2">
@@ -616,8 +616,8 @@ export default function EntityEditorClient({
                         onClick={() => setBannerSeverity(sev.id)}
                         className={`py-2 px-3 text-xs font-semibold rounded-lg border text-center transition-all ${
                           bannerSeverity === sev.id
-                            ? "bg-slate-800 border-blue-500 text-white"
-                            : "bg-slate-950 border-slate-800 text-slate-400 hover:text-white"
+                            ? "bg-brand text-white border-brand"
+                            : "bg-elevated border-border-subtle text-content-secondary hover:text-content-primary"
                         }`}
                       >
                         {sev.label}
@@ -627,7 +627,7 @@ export default function EntityEditorClient({
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-400">
+                  <label className="text-xs font-medium text-content-secondary">
                     Banner Title
                   </label>
                   <input
@@ -635,12 +635,12 @@ export default function EntityEditorClient({
                     placeholder="e.g. Under Active Federal Inquiry"
                     value={bannerTitle}
                     onChange={(e) => setBannerTitle(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                    className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-content-primary focus:outline-none focus:border-border-strong"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-400">
+                  <label className="text-xs font-medium text-content-secondary">
                     Banner Body Context
                   </label>
                   <textarea
@@ -648,19 +648,19 @@ export default function EntityEditorClient({
                     placeholder="Provide 1-2 factual sentences detailing the context..."
                     value={bannerBody}
                     onChange={(e) => setBannerBody(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 leading-relaxed"
+                    className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-content-primary focus:outline-none focus:border-border-strong leading-relaxed"
                   />
                 </div>
               </div>
             )}
           </div>
           {/* Living Dossier Blocks Header & Picker */}
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3 flex-wrap gap-2">
+          <div className="flex items-center justify-between border-b border-border-subtle pb-3 flex-wrap gap-2">
             <div>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-content-secondary flex items-center gap-2">
                 Information Blocks
               </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-content-muted mt-0.5">
                 Add modular cards to build the scannable profile layout.
               </p>
             </div>
@@ -679,9 +679,9 @@ export default function EntityEditorClient({
                   key={b.type}
                   type="button"
                   onClick={() => handleAddBlock(b.type)}
-                  className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-slate-200 border border-slate-700/80 flex items-center gap-1 transition-colors"
+                  className="px-2.5 py-1 bg-elevated hover:bg-surface text-xs font-medium rounded-lg text-content-primary border border-border-strong flex items-center gap-1 transition-colors"
                 >
-                  <Plus className="w-3 h-3 text-blue-400" /> {b.label}
+                  <Plus className="w-3 h-3 text-brand" /> {b.label}
                 </button>
               ))}
             </div>
@@ -689,11 +689,11 @@ export default function EntityEditorClient({
 
           {/* Block List */}
           {profileBlocks.length === 0 ? (
-            <div className="p-8 border border-dashed border-slate-800 rounded-xl text-center space-y-2">
-              <p className="text-xs text-slate-500">
+            <div className="p-8 border border-dashed border-border-subtle rounded-xl text-center space-y-2">
+              <p className="text-xs text-content-muted">
                 No profile blocks added yet.
               </p>
-              <p className="text-[11px] text-slate-600">
+              <p className="text-[11px] text-content-muted">
                 Add a metric strip for key stats (district, party, market cap)
                 or a takeaway list for core background points.
               </p>

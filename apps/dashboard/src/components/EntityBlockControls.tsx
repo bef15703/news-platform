@@ -27,21 +27,21 @@ function TextCardEditor({ block, onUpdate }: { block: TextCardBlock; onUpdate: (
     return (
         <div className="space-y-3">
             <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-400">Header Title (Optional)</label>
+                <label className="text-xs font-medium text-content-secondary">Header Title (Optional)</label>
                 <input
                     type="text"
                     value={block.title || ""}
                     onChange={(e) => onUpdate({...block, title: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+                    className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-1.5 text-xs text-content-primary focus:outline-none focus:border-border-strong"
                 />
             </div>
             <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-400">Body Content</label>
+                <label className="text-xs font-medium text-content-secondary">Body Content</label>
                 <textarea 
                     rows={3}
                     value={block.body || ""}
                     onChange={(e) => onUpdate({...block, body: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500 leading-relaxed"
+                    className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-xs text-content-primary focus:outline-none focus:border-border-strong leading-relaxed"
                 />
             </div>
         </div>
@@ -53,21 +53,21 @@ function StatStripEditor({ block, onUpdate }: { block: StatStripBlock; onUpdate:
     return (
         <div className="grid grid-cols-12 gap-3">
             <div className="col-span-8 space-y-1">
-                <label className="text-xs font-medium text-slate-400">Statistic / Indicator</label>
+                <label className="text-xs font-medium text-content-secondary">Statistic / Indicator</label>
                 <input 
                     type="text"
                     value={block.text || ""}
                     onChange={(e) => onUpdate({ ...block, text: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+                    className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-1.5 text-xs text-content-primary focus:outline-none focus:border-border-strong"
                 />
             </div>
             <div className="col-span-4 space-y-1">
-                <label className="text-xs font-medium text-slate-400">Subtext (Optional)</label>
+                <label className="text-xs font-medium text-content-secondary">Subtext (Optional)</label>
                 <input
                 type="text"
                 value={block.subtext || ""}
                 onChange={(e) => onUpdate({ ...block, subtext: e.target.value })}
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+                className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-1.5 text-xs text-content-primary focus:outline-none focus:border-border-strong"
                 />
             </div>
         </div>
@@ -95,25 +95,25 @@ function BulletListEditor({ block, onUpdate, }: { block: BulletListBlock; onUpda
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <label className="text-xs font-medium text-slate-400">List Title</label>
+        <label className="text-xs font-medium text-content-secondary">List Title</label>
         <input
           type="text"
           value={block.title || ""}
           onChange={(e) => onUpdate({ ...block, title: e.target.value })}
-          className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+          className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-1.5 text-xs text-content-primary focus:outline-none focus:border-border-strong"
         />
       </div>
 
       <div className="space-y-2 pt-1">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-medium text-slate-400">
+          <span className="text-[11px] font-medium text-content-secondary">
             List Items ({block.items.length}/8)
           </span>
           {block.items.length < 8 && (
             <button
               type="button"
               onClick={addItem}
-              className="text-[11px] text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1"
+              className="text-[11px] text-brand hover:text-brand-hover font-semibold flex items-center gap-1"
             >
               <Plus className="w-3 h-3" /> Add Item
             </button>
@@ -122,18 +122,18 @@ function BulletListEditor({ block, onUpdate, }: { block: BulletListBlock; onUpda
 
         {block.items.map((item, i) => (
           <div key={i} className="flex items-center gap-2">
-            <span className="text-xs font-mono text-slate-500 w-4 text-right">{i + 1}.</span>
+            <span className="text-xs font-mono text-content-muted w-4 text-right">{i + 1}.</span>
             <input
               type="text"
               value={item}
               onChange={(e) => handleItemChange(i, e.target.value)}
-              className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+              className="flex-1 bg-elevated border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-content-primary focus:outline-none focus:border-border-strong"
             />
             <button
               type="button"
               disabled={block.items.length <= 1}
               onClick={() => removeItem(i)}
-              className="text-slate-600 hover:text-red-400 p-1 disabled:opacity-20 transition-colors"
+              className="text-content-muted hover:text-red-400 p-1 disabled:opacity-20 transition-colors"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </button>
@@ -168,25 +168,25 @@ function FactSheetEditor({ block, onUpdate}: { block: FactSheetBlock; onUpdate: 
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <label className="text-xs font-medium text-slate-400">Section Header (Optional)</label>
+        <label className="text-xs font-medium text-content-secondary">Section Header (Optional)</label>
         <input
           type="text"
           value={block.title || ""}
           onChange={(e) => onUpdate({ ...block, title: e.target.value })}
-          className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+          className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-1.5 text-xs text-content-primary focus:outline-none focus:border-border-strong"
         />
       </div>
 
       <div className="space-y-2 pt-1">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-medium text-slate-400">
+          <span className="text-[11px] font-medium text-content-secondary">
             Field Pairs ({block.pairs.length}/8)
           </span>
           {block.pairs.length < 8 && (
             <button
               type="button"
               onClick={addPair}
-              className="text-[11px] text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1"
+              className="text-[11px] text-brand hover:text-brand-hover font-semibold flex items-center gap-1"
             >
               <Plus className="w-3 h-3" /> Add Pair
             </button>
@@ -200,7 +200,7 @@ function FactSheetEditor({ block, onUpdate}: { block: FactSheetBlock; onUpdate: 
                 type="text"
                 value={pair.label}
                 onChange={(e) => handlePairChange(i, "label", e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+                className="w-full bg-elevated border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-content-primary focus:outline-none focus:border-border-strong"
               />
             </div>
             <div className="col-span-7">
@@ -208,7 +208,7 @@ function FactSheetEditor({ block, onUpdate}: { block: FactSheetBlock; onUpdate: 
                 type="text"
                 value={pair.value}
                 onChange={(e) => handlePairChange(i, "value", e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+                className="w-full bg-elevated border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs text-content-primary focus:outline-none focus:border-border-strong"
               />
             </div>
             <div className="col-span-1 flex justify-end">
@@ -216,7 +216,7 @@ function FactSheetEditor({ block, onUpdate}: { block: FactSheetBlock; onUpdate: 
                 type="button"
                 disabled={block.pairs.length <= 1}
                 onClick={() => removePair(i)}
-                className="text-slate-600 hover:text-red-400 p-1 disabled:opacity-20 transition-colors"
+                className="text-content-muted hover:text-red-400 p-1 disabled:opacity-20 transition-colors"
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
@@ -252,25 +252,25 @@ function SocialLinksEditor({ block, onUpdate, }: { block: SocialLinksBlock; onUp
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <label className="text-xs font-medium text-slate-400">Header Title (Optional)</label>
+        <label className="text-xs font-medium text-content-secondary">Header Title (Optional)</label>
         <input
           type="text"
           value={block.title || ""}
           onChange={(e) => onUpdate({ ...block, title: e.target.value })}
-          className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+          className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-1.5 text-xs text-content-primary focus:outline-none focus:border-border-strong"
         />
       </div>
 
       <div className="space-y-2 pt-1">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-medium text-slate-400">
+          <span className="text-[11px] font-medium text-content-secondary">
             Channels ({block.links.length}/6)
           </span>
           {block.links.length < 6 && (
             <button
               type="button"
               onClick={addLink}
-              className="text-[11px] text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1"
+              className="text-[11px] text-brand hover:text-brand-hover font-semibold flex items-center gap-1"
             >
               <Plus className="w-3 h-3" /> Add Link
             </button>
@@ -283,7 +283,7 @@ function SocialLinksEditor({ block, onUpdate, }: { block: SocialLinksBlock; onUp
               <select
                 value={link.platform}
                 onChange={(e) => handleLinkChange(i, "platform", e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+                className="w-full bg-elevated border border-border-subtle rounded-lg px-2 py-1.5 text-xs text-content-primary focus:outline-none focus:border-border-strong"
               >
                 <option value="x">X / Twitter</option>
                 <option value="facebook">Facebook</option>
@@ -302,7 +302,7 @@ function SocialLinksEditor({ block, onUpdate, }: { block: SocialLinksBlock; onUp
                 value={link.url}
                 placeholder="https://..."
                 onChange={(e) => handleLinkChange(i, "url", e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs font-mono text-slate-200 focus:outline-none focus:border-blue-500"
+                className="w-full bg-elevated border border-border-subtle rounded-lg px-2.5 py-1.5 text-xs font-mono text-content-primary focus:outline-none focus:border-border-strong"
               />
             </div>
             <div className="col-span-1 flex justify-end">
@@ -310,7 +310,7 @@ function SocialLinksEditor({ block, onUpdate, }: { block: SocialLinksBlock; onUp
                 type="button"
                 disabled={block.links.length <= 1}
                 onClick={() => removeLink(i)}
-                className="text-slate-600 hover:text-red-400 p-1 disabled:opacity-20 transition-colors"
+                className="text-content-muted hover:text-red-400 p-1 disabled:opacity-20 transition-colors"
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
@@ -327,22 +327,22 @@ function ImageCaptionEditor({ block, onUpdate, }: { block: ImageCaptionBlock; on
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <label className="text-xs font-medium text-slate-400">Image URL</label>
+        <label className="text-xs font-medium text-content-secondary">Image URL</label>
         <input
           type="text"
           value={block.imageUrl}
           placeholder="https://..."
           onChange={(e) => onUpdate({ ...block, imageUrl: e.target.value })}
-          className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200 focus:outline-none focus:border-blue-500"
+          className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-1.5 text-xs font-mono text-content-primary focus:outline-none focus:border-border-strong"
         />
       </div>
       <div className="space-y-1">
-        <label className="text-xs font-medium text-slate-400">Caption / Note</label>
+        <label className="text-xs font-medium text-content-secondary">Caption / Note</label>
         <input
           type="text"
           value={block.caption || ""}
           onChange={(e) => onUpdate({ ...block, caption: e.target.value })}
-          className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+          className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-1.5 text-xs text-content-primary focus:outline-none focus:border-border-strong"
         />
       </div>
     </div>
@@ -369,14 +369,14 @@ export function EntityBlockControls({
   onMove,
 }: Props) {
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+    <div className="bg-surface border border-border-subtle rounded-2xl p-5 space-y-4">
       {/* Block Header Toolbar */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+      <div className="flex items-center justify-between border-b border-border-subtle pb-3">
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-800/40">
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-brand/10 text-brand border border-brand/30">
             {BLOCK_TITLES[block.type]}
           </span>
-          <span className="text-xs font-semibold text-slate-400">
+          <span className="text-xs font-semibold text-content-secondary">
             Block #{index + 1}
           </span>
         </div>
@@ -387,7 +387,7 @@ export function EntityBlockControls({
             disabled={index === 0}
             onClick={() => onMove("up")}
             title="Move Up"
-            className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
+            className="p-1 rounded hover:bg-elevated text-content-secondary hover:text-content-primary disabled:opacity-30 disabled:hover:bg-transparent"
           >
             <ArrowUp className="w-3.5 h-3.5" />
           </button>
@@ -396,7 +396,7 @@ export function EntityBlockControls({
             disabled={index === totalBlocks - 1}
             onClick={() => onMove("down")}
             title="Move Down"
-            className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
+            className="p-1 rounded hover:bg-elevated text-content-secondary hover:text-content-primary disabled:opacity-30 disabled:hover:bg-transparent"
           >
             <ArrowDown className="w-3.5 h-3.5" />
           </button>
@@ -404,7 +404,7 @@ export function EntityBlockControls({
             type="button"
             onClick={onRemove}
             title="Delete Block"
-            className="p-1 rounded hover:bg-red-950/60 text-slate-500 hover:text-red-400 ml-1 transition-colors"
+            className="p-1 rounded hover:bg-red-950/60 text-content-muted hover:text-red-400 ml-1 transition-colors"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>

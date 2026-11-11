@@ -96,49 +96,49 @@ export function EventStoryBlockControls({
     <div className="space-y-6">
       {/* Quick Block Insertion Toolbar */}
       <div className="space-y-2">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-400">
+        <label className="text-xs font-bold uppercase tracking-wider text-content-secondary">
           Insert Story Block
         </label>
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => addBlock("heading")}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-elevated hover:bg-surface text-xs font-medium text-content-primary rounded-lg border border-border-strong transition-colors"
           >
-            <Heading className="w-3.5 h-3.5 text-blue-400" /> Heading
+            <Heading className="w-3.5 h-3.5 text-brand" /> Heading
           </button>
           <button
             type="button"
             onClick={() => addBlock("paragraph")}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-elevated hover:bg-surface text-xs font-medium text-content-primary rounded-lg border border-border-strong transition-colors"
           >
-            <AlignLeft className="w-3.5 h-3.5 text-slate-400" /> Paragraph
+            <AlignLeft className="w-3.5 h-3.5 text-content-secondary" /> Paragraph
           </button>
           <button
             type="button"
             onClick={() => addBlock("image")}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-elevated hover:bg-surface text-xs font-medium text-content-primary rounded-lg border border-border-strong transition-colors"
           >
             <ImageIcon className="w-3.5 h-3.5 text-emerald-400" /> Photo
           </button>
           <button
             type="button"
             onClick={() => addBlock("direct_quote_callout")}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-elevated hover:bg-surface text-xs font-medium text-content-primary rounded-lg border border-border-strong transition-colors"
           >
             <Quote className="w-3.5 h-3.5 text-amber-400" /> Quote
           </button>
           <button
             type="button"
             onClick={() => addBlock("data_chart")}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-elevated hover:bg-surface text-xs font-medium text-content-primary rounded-lg border border-border-strong transition-colors"
           >
             <BarChart2 className="w-3.5 h-3.5 text-purple-400" /> Data Split
           </button>
           <button
             type="button"
             onClick={() => addBlock("breaking_banner")}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-200 rounded-lg border border-slate-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-elevated hover:bg-surface text-xs font-medium text-content-primary rounded-lg border border-border-strong transition-colors"
           >
             <AlertTriangle className="w-3.5 h-3.5 text-red-400" /> Context
             Banner
@@ -149,7 +149,7 @@ export function EventStoryBlockControls({
       {/* Block List Inspector */}
       <div className="space-y-4">
         {blocks.length === 0 ? (
-          <div className="text-center p-6 border border-dashed border-slate-800 rounded-2xl text-slate-500 text-xs">
+          <div className="text-center p-6 border border-dashed border-border-subtle rounded-2xl text-content-muted text-xs">
             No story narrative blocks yet. Use the buttons above to build the
             article body.
           </div>
@@ -163,10 +163,10 @@ export function EventStoryBlockControls({
               <div
                 // 2. Safe primitive key
                 key={typeof block.id === "string" ? block.id : `block-${index}`}
-                className="bg-slate-900/60 border border-slate-800 rounded-xl p-4 space-y-3 relative group"
+                className="bg-surface border border-border-subtle rounded-xl p-4 space-y-3 relative group"
               >
-                <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                <div className="flex items-center justify-between border-b border-border-subtle pb-2">
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-elevated text-content-secondary">
                     {/* 3. Safe fallback so it never crashes on replace */}
                     {block.type
                       ? block.type.replace(/_/g, " ")
@@ -177,7 +177,7 @@ export function EventStoryBlockControls({
                       type="button"
                       onClick={() => moveBlock(index, "up")}
                       disabled={index === 0}
-                      className="p-1 hover:bg-slate-800 rounded text-slate-400 disabled:opacity-30"
+                      className="p-1 hover:bg-elevated rounded text-content-secondary hover:text-content-primary disabled:opacity-30"
                     >
                       <ChevronUp className="w-3.5 h-3.5" />
                     </button>
@@ -185,14 +185,14 @@ export function EventStoryBlockControls({
                       type="button"
                       onClick={() => moveBlock(index, "down")}
                       disabled={index === blocks.length - 1}
-                      className="p-1 hover:bg-slate-800 rounded text-slate-400 disabled:opacity-30"
+                      className="p-1 hover:bg-elevated rounded text-content-secondary hover:text-content-primary disabled:opacity-30"
                     >
                       <ChevronDown className="w-3.5 h-3.5" />
                     </button>
                     <button
                       type="button"
                       onClick={() => removeBlock(block.id)}
-                      className="p-1 hover:bg-red-950/60 text-slate-500 hover:text-red-400 rounded transition-colors ml-1"
+                      className="p-1 hover:bg-red-950/60 text-content-muted hover:text-red-400 rounded transition-colors ml-1"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -209,7 +209,7 @@ export function EventStoryBlockControls({
                       onChange={(e) =>
                         updateBlock(block.id, { ...block, text: e.target.value })
                       }
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-sm font-semibold focus:outline-none focus:border-blue-500"
+                      className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-1.5 text-sm font-semibold text-content-primary focus:outline-none focus:border-border-strong"
                     />
                   </div>
                 )}
@@ -223,7 +223,7 @@ export function EventStoryBlockControls({
                       onChange={(e) =>
                         updateBlock(block.id, { ...block, text: e.target.value })
                       }
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-blue-500 leading-relaxed"
+                      className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-content-primary focus:outline-none focus:border-border-strong leading-relaxed"
                     />
                   </div>
                 )}
@@ -237,7 +237,7 @@ export function EventStoryBlockControls({
                       onChange={(e) =>
                         updateBlock(block.id, { ...block, url: e.target.value })
                       }
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs font-mono text-slate-300 focus:outline-none focus:border-blue-500"
+                      className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-1.5 text-xs font-mono text-content-primary focus:outline-none focus:border-border-strong"
                     />
                     <div className="grid grid-cols-2 gap-2">
                       <input
@@ -250,7 +250,7 @@ export function EventStoryBlockControls({
                             caption: e.target.value,
                           })
                         }
-                        className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-300"
+                        className="bg-elevated border border-border-subtle rounded-lg px-2.5 py-1 text-xs text-content-primary focus:outline-none focus:border-border-strong"
                       />
                       <input
                         type="text"
@@ -262,7 +262,7 @@ export function EventStoryBlockControls({
                             credit: e.target.value,
                           })
                         }
-                        className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-300"
+                        className="bg-elevated border border-border-subtle rounded-lg px-2.5 py-1 text-xs text-content-primary focus:outline-none focus:border-border-strong"
                       />
                     </div>
                   </div>
@@ -277,7 +277,7 @@ export function EventStoryBlockControls({
                       onChange={(e) =>
                         updateBlock(block.id, { ...block, quote: e.target.value })
                       }
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-sm italic text-slate-200"
+                      className="w-full bg-elevated border border-border-subtle rounded-lg px-3 py-1.5 text-sm italic text-content-primary focus:outline-none focus:border-border-strong"
                     />
                     <div className="grid grid-cols-2 gap-2">
                       <input
@@ -290,7 +290,7 @@ export function EventStoryBlockControls({
                             speaker: e.target.value,
                           })
                         }
-                        className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-300"
+                        className="bg-elevated border border-border-subtle rounded-lg px-2.5 py-1 text-xs text-content-primary focus:outline-none focus:border-border-strong"
                       />
                       <input
                         type="text"
@@ -299,7 +299,7 @@ export function EventStoryBlockControls({
                         onChange={(e) =>
                           updateBlock(block.id, { ...block, role: e.target.value })
                         }
-                        className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-300"
+                        className="bg-elevated border border-border-subtle rounded-lg px-2.5 py-1 text-xs text-content-primary focus:outline-none focus:border-border-strong"
                       />
                     </div>
                   </div>
@@ -314,7 +314,7 @@ export function EventStoryBlockControls({
                       onChange={(e) =>
                         updateBlock(block.id, { ...block, title: e.target.value })
                       }
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-200 font-semibold"
+                      className="w-full bg-elevated border border-border-subtle rounded-lg px-2.5 py-1 text-xs text-content-primary font-semibold focus:outline-none focus:border-border-strong"
                     />
                     <div className="grid grid-cols-2 gap-2">
                       <div className="flex gap-1.5">
@@ -328,7 +328,7 @@ export function EventStoryBlockControls({
                               primaryLabel: e.target.value,
                             })
                           }
-                          className="w-2/3 bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs"
+                          className="w-2/3 bg-elevated border border-border-subtle rounded-lg px-2 py-1 text-xs text-content-primary focus:outline-none focus:border-border-strong"
                         />
                         <input
                           type="number"
@@ -339,7 +339,7 @@ export function EventStoryBlockControls({
                               primaryValue: Number(e.target.value),
                             })
                           }
-                          className="w-1/3 bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs font-mono"
+                          className="w-1/3 bg-elevated border border-border-subtle rounded-lg px-2 py-1 text-xs font-mono text-content-primary focus:outline-none focus:border-border-strong"
                         />
                       </div>
                       <div className="flex gap-1.5">
@@ -353,7 +353,7 @@ export function EventStoryBlockControls({
                               secondaryLabel: e.target.value,
                             })
                           }
-                          className="w-2/3 bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs"
+                          className="w-2/3 bg-elevated border border-border-subtle rounded-lg px-2 py-1 text-xs text-content-primary focus:outline-none focus:border-border-strong"
                         />
                         <input
                           type="number"
@@ -364,7 +364,7 @@ export function EventStoryBlockControls({
                               secondaryValue: Number(e.target.value),
                             })
                           }
-                          className="w-1/3 bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs font-mono"
+                          className="w-1/3 bg-elevated border border-border-subtle rounded-lg px-2 py-1 text-xs font-mono text-content-primary focus:outline-none focus:border-border-strong"
                         />
                       </div>
                     </div>
@@ -383,7 +383,7 @@ export function EventStoryBlockControls({
                           title: e.target.value,
                         })
                       }
-                      className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-blue-500"
+                      className="flex-1 bg-elevated border border-border-subtle rounded-lg px-2.5 py-1 text-xs text-content-primary focus:outline-none focus:border-border-strong"
                     />
                     <select
                       value={block.severity || "urgent"}
@@ -396,7 +396,7 @@ export function EventStoryBlockControls({
                             | "update",
                         })
                       }
-                      className="bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-blue-500"
+                      className="bg-elevated border border-border-subtle rounded-lg px-2 py-1 text-xs text-content-primary focus:outline-none focus:border-border-strong"
                     >
                       <option value="urgent">Urgent</option>
                       <option value="developing">Developing</option>

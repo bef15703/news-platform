@@ -32,7 +32,7 @@ export function MobileEmulator({
   onSelectCard,
 }: MobileEmulatorProps) {
   return (
-    <div className="w-[440px] border-r border-slate-800/80 bg-slate-900/30 flex flex-col items-center py-6 px-4 overflow-y-auto">
+    <div className="w-[440px] border-r border-border-subtle bg-surface/40 flex flex-col items-center py-6 px-4 overflow-y-auto">
       {activeTab === "cards" ? (
         <StoryCardPreviewPane
           cards={cards}

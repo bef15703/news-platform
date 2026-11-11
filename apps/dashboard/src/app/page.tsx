@@ -92,14 +92,14 @@ export default async function EditorialDashboardPage() {
     .execute();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-8 max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-canvas text-content-primary p-8 max-w-7xl mx-auto space-y-8">
       {/* Hero Welcome & Quick Stats */}
       <div className="space-y-4">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight">
+          <h1 className="text-2xl font-black text-content-primary">
             Editorial Mission Control
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-content-secondary mt-0.5">
             Triage raw wire clusters, polish AI-synthesized story decks, and inspect entity dossiers.
           </p>
         </div>
@@ -108,66 +108,66 @@ export default async function EditorialDashboardPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <Link
             href="/ingest"
-            className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-blue-500/50 transition-all group"
+            className="p-4 rounded-2xl bg-surface border border-border-subtle hover:border-brand/60 transition-all group shadow-sm"
           >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-content-secondary">
                 Pending Clusters
               </span>
-              <Radio className="w-4 h-4 text-blue-400 group-hover:animate-pulse" />
+              <Radio className="w-4 h-4 text-brand group-hover:animate-pulse" />
             </div>
-            <div className="text-2xl font-black text-white mt-2 font-mono">
+            <div className="text-2xl font-black text-content-primary mt-2">
               {stats.pending_clusters}
             </div>
-            <p className="text-[10px] text-slate-500 mt-1">
+            <p className="text-[10px] text-content-muted mt-1">
               {stats.unclustered_articles} unassigned wire articles
             </p>
           </Link>
 
-          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+          <div className="p-4 rounded-2xl bg-surface border border-border-subtle shadow-sm">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-content-secondary">
                 Awaiting Review
               </span>
-              <FileCheck2 className="w-4 h-4 text-amber-400" />
+              <FileCheck2 className="w-4 h-4 text-amber-500" />
             </div>
-            <div className="text-2xl font-black text-white mt-2 font-mono">
+            <div className="text-2xl font-black text-content-primary mt-2">
               {stats.in_review_events}
             </div>
-            <p className="text-[10px] text-slate-500 mt-1">
+            <p className="text-[10px] text-content-muted mt-1">
               Synthesized decks ready for signoff
             </p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+          <div className="p-4 rounded-2xl bg-surface border border-border-subtle shadow-sm">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-content-secondary">
                 Live On iOS
               </span>
-              <Sparkles className="w-4 h-4 text-emerald-400" />
+              <Sparkles className="w-4 h-4 text-emerald-500" />
             </div>
-            <div className="text-2xl font-black text-white mt-2 font-mono">
+            <div className="text-2xl font-black text-content-primary mt-2">
               {stats.published_events}
             </div>
-            <p className="text-[10px] text-slate-500 mt-1">
+            <p className="text-[10px] text-content-muted mt-1">
               Published public event cards
             </p>
           </div>
 
           <Link
             href="/entities"
-            className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-blue-500/50 transition-all group"
+            className="p-4 rounded-2xl bg-surface border border-border-subtle hover:border-brand/60 transition-all group shadow-sm"
           >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-content-secondary">
                 Entities
               </span>
-              <Layers className="w-4 h-4 text-indigo-400" />
+              <Layers className="w-4 h-4 text-indigo-500" />
             </div>
-            <div className="text-2xl font-black text-white mt-2 font-mono">
+            <div className="text-2xl font-black text-content-primary mt-2">
               {stats.total_entities}
             </div>
-            <p className="text-[10px] text-slate-500 mt-1">
+            <p className="text-[10px] text-content-muted mt-1">
               {stats.active_banners} active context alerts
             </p>
           </Link>
@@ -180,17 +180,17 @@ export default async function EditorialDashboardPage() {
         <div className="lg:col-span-8 space-y-6">
           {/* Breaking News Ingest Triage Strip */}
           {topClusters.rows.length > 0 && (
-            <div className="bg-gradient-to-br from-blue-950/40 via-slate-900/60 to-slate-900/60 border border-blue-900/40 rounded-2xl p-5 space-y-3">
+            <div className="bg-surface border border-brand/20 rounded-2xl p-5 space-y-3 shadow-sm">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-blue-400" />
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+                  <TrendingUp className="w-4 h-4 text-brand" />
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-content-primary">
                     Highest-Volume Inbound Clusters
                   </h3>
                 </div>
                 <Link
                   href="/ingest"
-                  className="text-xs text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1 transition-colors"
+                  className="text-xs text-brand hover:text-brand-hover font-semibold flex items-center gap-1 transition-colors"
                 >
                   View Ingest Queue ({stats.pending_clusters}) →
                 </Link>
@@ -201,24 +201,24 @@ export default async function EditorialDashboardPage() {
                   <Link
                     key={c.event_id}
                     href={`/events/${c.event_id}`}
-                    className="p-3 bg-slate-950/80 hover:bg-slate-900 border border-slate-800/80 hover:border-blue-700/60 rounded-xl flex items-center justify-between gap-4 transition-all group"
+                    className="p-3 bg-elevated hover:bg-surface border border-border-subtle hover:border-brand/50 rounded-xl flex items-center justify-between gap-4 transition-all group"
                   >
                     <div className="min-w-0 space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-[10px] font-mono px-2 py-0.2 rounded bg-blue-950 text-blue-300 border border-blue-800/60 font-bold">
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-brand/10 text-brand border border-brand/20 font-bold">
                           {c.article_count} sources
                         </span>
                         {c.sources.slice(0, 3).map((s) => (
-                          <span key={s} className="text-[10px] text-slate-500 font-medium">
+                          <span key={s} className="text-[10px] text-content-muted font-medium">
                             {s}
                           </span>
                         ))}
                       </div>
-                      <h4 className="text-xs font-bold text-slate-200 group-hover:text-blue-300 truncate">
+                      <h4 className="text-xs font-bold text-content-primary group-hover:text-brand truncate">
                         {c.event_title}
                       </h4>
                     </div>
-                    <span className="text-[11px] font-semibold text-slate-400 group-hover:text-white shrink-0 flex items-center gap-1">
+                    <span className="text-[11px] font-semibold text-content-secondary group-hover:text-content-primary shrink-0 flex items-center gap-1">
                       Edit Deck →
                     </span>
                   </Link>
@@ -228,54 +228,54 @@ export default async function EditorialDashboardPage() {
           )}
 
           {/* Active Story Decks */}
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div className="bg-surface border border-border-subtle rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="flex items-center justify-between border-b border-border-subtle pb-3">
               <div>
-                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-content-primary">
                   Active Event Decks
                 </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-content-muted mt-0.5">
                   Stories currently in editorial review or live on mobile feeds.
                 </p>
               </div>
             </div>
 
             {stories.rows.length === 0 ? (
-              <div className="p-8 text-center text-xs text-slate-500">
+              <div className="p-8 text-center text-xs text-content-muted">
                 No active events in review or published yet.
               </div>
             ) : (
-              <div className="divide-y divide-slate-800/60">
+              <div className="divide-y divide-border-subtle">
                 {stories.rows.map((ev) => (
                   <Link
                     key={ev.id}
                     href={`/events/${ev.id}`}
-                    className="py-3.5 flex items-center justify-between hover:bg-slate-800/30 px-2 rounded-xl transition-colors group"
+                    className="py-3.5 flex items-center justify-between hover:bg-elevated/40 px-2 rounded-xl transition-colors group"
                   >
                     <div className="flex items-center gap-3.5 min-w-0">
                       <span
                         className={`w-2.5 h-2.5 rounded-full shrink-0 ${
                           ev.status === "published"
-                            ? "bg-emerald-400 shadow-sm shadow-emerald-500/50"
-                            : "bg-amber-400 shadow-sm shadow-amber-500/50"
+                            ? "bg-emerald-500 shadow-sm shadow-emerald-500/40"
+                            : "bg-amber-500 shadow-sm shadow-amber-500/40"
                         }`}
                       />
                       <div className="min-w-0">
-                        <h4 className="text-xs font-bold text-slate-200 group-hover:text-blue-400 truncate transition-colors">
+                        <h4 className="text-xs font-bold text-content-primary group-hover:text-brand truncate transition-colors">
                           {ev.title}
                         </h4>
-                        <div className="flex items-center gap-2.5 text-[11px] text-slate-500 mt-0.5 font-mono">
+                        <div className="flex items-center gap-2.5 text-[11px] text-content-muted mt-0.5">
                           <span>{ev.card_count} cards</span>
                           <span>•</span>
                           <span>{ev.source_count} sources</span>
                           <span>•</span>
-                          <span className="capitalize text-slate-400">
+                          <span className="capitalize text-content-secondary">
                             {ev.status.replace("_", " ")}
                           </span>
                         </div>
                       </div>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-slate-300 transition-colors shrink-0" />
+                    <ChevronRight className="w-4 h-4 text-content-muted group-hover:text-content-secondary transition-colors shrink-0" />
                   </Link>
                 ))}
               </div>
@@ -286,27 +286,27 @@ export default async function EditorialDashboardPage() {
         {/* Right Column: Context Alert Audit & Navigation Shortcuts */}
         <div className="lg:col-span-4 space-y-6">
           {/* Active Context Banner Watchlist */}
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-3">
+          <div className="bg-surface border border-border-subtle rounded-2xl p-5 space-y-3 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-amber-400" />
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
+                <AlertTriangle className="w-4 h-4 text-amber-500" />
+                <h3 className="text-xs font-bold uppercase tracking-wider text-content-secondary">
                   Active Warnings
                 </h3>
               </div>
               <Link
                 href="/entities"
-                className="text-[11px] text-slate-400 hover:text-white"
+                className="text-[11px] text-content-secondary hover:text-content-primary"
               >
                 All Entities →
               </Link>
             </div>
-            <p className="text-[11px] text-slate-500 leading-snug">
+            <p className="text-[11px] text-content-muted leading-snug">
               Entities with prominent red or yellow structural banners live on user devices.
             </p>
 
             {flaggedEntities.length === 0 ? (
-              <p className="text-xs text-slate-600 italic py-2">
+              <p className="text-xs text-content-muted italic py-2">
                 No active context warnings deployed.
               </p>
             ) : (
@@ -315,10 +315,11 @@ export default async function EditorialDashboardPage() {
                   <Link
                     key={ent.id}
                     href={`/entities/${ent.id}`}
-                    className="p-2.5 bg-slate-950 border border-slate-800 hover:border-amber-700/60 rounded-xl flex items-center justify-between gap-3 transition-colors group"
+                    className="p-2.5 bg-canvas border border-border-subtle hover:border-amber-500/50 rounded-xl flex items-center justify-between gap-3 transition-colors group"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-7 h-7 rounded-lg bg-slate-900 overflow-hidden shrink-0 flex items-center justify-center">
+                      {/* Set relative container for fill-based Next.js Image */}
+                      <div className="relative w-7 h-7 rounded-lg bg-elevated overflow-hidden shrink-0 flex items-center justify-center border border-border-subtle">
                         {ent.avatar_url ? (
                           <Image
                             src={ent.avatar_url}
@@ -329,19 +330,19 @@ export default async function EditorialDashboardPage() {
                             className="object-cover"
                           />
                         ) : (
-                          <User className="w-3.5 h-3.5 text-slate-600" />
+                          <User className="w-3.5 h-3.5 text-content-muted" />
                         )}
                       </div>
                       <div className="min-w-0">
-                        <span className="text-xs font-bold text-slate-200 group-hover:text-amber-300 truncate block">
+                        <span className="text-xs font-bold text-content-primary group-hover:text-amber-500 truncate block">
                           {ent.name}
                         </span>
-                        <span className="text-[10px] text-slate-500 truncate block">
+                        <span className="text-[10px] text-content-muted truncate block">
                           {ent.context_banner_title || "Alert Active"}
                         </span>
                       </div>
                     </div>
-                    <span className="text-[10px] font-semibold text-slate-500 group-hover:text-white shrink-0">
+                    <span className="text-[10px] font-semibold text-content-muted group-hover:text-content-primary shrink-0">
                       Edit
                     </span>
                   </Link>
@@ -351,31 +352,31 @@ export default async function EditorialDashboardPage() {
           </div>
 
           {/* Quick Jump Links */}
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+          <div className="bg-surface border border-border-subtle rounded-2xl p-5 space-y-3 shadow-sm">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-content-secondary">
               Quick Portals
             </h3>
             <div className="space-y-1.5">
               <Link
                 href="/ingest"
-                className="w-full p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between text-xs font-medium text-slate-300 hover:text-white transition-colors"
+                className="w-full p-2.5 bg-canvas hover:bg-elevated border border-border-subtle rounded-xl flex items-center justify-between text-xs font-medium text-content-secondary hover:text-content-primary transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <Radio className="w-3.5 h-3.5 text-blue-400" />
+                  <Radio className="w-3.5 h-3.5 text-brand" />
                   <span>Wire Triage & Clustering</span>
                 </div>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-600" />
+                <ArrowRight className="w-3.5 h-3.5 text-content-muted" />
               </Link>
 
               <Link
                 href="/entities"
-                className="w-full p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between text-xs font-medium text-slate-300 hover:text-white transition-colors"
+                className="w-full p-2.5 bg-canvas hover:bg-elevated border border-border-subtle rounded-xl flex items-center justify-between text-xs font-medium text-content-secondary hover:text-content-primary transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <Layers className="w-3.5 h-3.5 text-indigo-400" />
+                  <Layers className="w-3.5 h-3.5 text-indigo-500" />
                   <span>Entity Directory</span>
                 </div>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-600" />
+                <ArrowRight className="w-3.5 h-3.5 text-content-muted" />
               </Link>
             </div>
           </div>

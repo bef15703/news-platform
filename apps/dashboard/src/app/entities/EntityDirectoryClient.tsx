@@ -59,17 +59,17 @@ export default function EntityDirectoryClient({
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-canvas text-content-primary flex flex-col">
       {/* Top Header */}
-      <header className="h-14 border-b border-slate-800 px-8 flex items-center justify-between bg-slate-900/50 backdrop-blur-md sticky top-0 z-40">
+      <header className="h-14 border-b border-border-subtle px-8 flex items-center justify-between bg-surface/50 backdrop-blur-md sticky top-0 z-40">
         <div className="flex items-center gap-3">
-          <span className="text-xs font-mono px-2 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-800/40 font-bold">
+          <span className="text-xs font-mono px-2 py-0.5 rounded bg-brand/10 text-brand border border-brand/30 font-bold">
             REGISTRY
           </span>
-          <h1 className="text-sm font-bold text-white tracking-wide">
+          <h1 className="text-sm font-bold text-content-primary tracking-wide">
             Entities
           </h1>
-          <span className="text-xs text-slate-500 font-mono">
+          <span className="text-xs text-content-muted font-mono">
             ({entities.length} loaded)
           </span>
         </div>
@@ -80,13 +80,13 @@ export default function EntityDirectoryClient({
         {/* Controls Bar: Search & Category Pills */}
         <div className="space-y-4">
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-content-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search entities by name, slug, or title/role..."
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors shadow-sm"
+              className="w-full bg-elevated border border-border-subtle rounded-xl pl-10 pr-4 py-2.5 text-xs text-content-primary placeholder:text-content-muted focus:outline-none focus:border-border-strong transition-colors shadow-sm"
             />
           </div>
 
@@ -102,8 +102,8 @@ export default function EntityDirectoryClient({
                   onClick={() => onCategoryClick(cat.id)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap transition-all ${
                     isActive
-                      ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
-                      : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                      ? "bg-brand text-white shadow-md"
+                      : "bg-surface border border-border-subtle text-content-secondary hover:text-content-primary hover:bg-elevated"
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -115,20 +115,20 @@ export default function EntityDirectoryClient({
         </div>
 
         {/* Directory Table */}
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div className="bg-surface border border-border-subtle rounded-2xl overflow-hidden shadow-sm">
           {entities.length === 0 ? (
             <div className="p-12 text-center space-y-2">
-              <p className="text-sm font-semibold text-slate-400">
+              <p className="text-sm font-semibold text-content-secondary">
                 No entities found
               </p>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-content-muted">
                 Try loosening your search term or selecting &quot;All Entities&quot;.
               </p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-950/80 border-b border-slate-800 text-[10px] uppercase tracking-wider text-slate-400">
+                <thead className="bg-canvas/80 border-b border-border-subtle text-[10px] uppercase tracking-wider text-content-secondary">
                   <tr>
                     <th className="py-3 px-4 font-semibold">Entity</th>
                     <th className="py-3 px-4 font-semibold">Category</th>
@@ -144,7 +144,7 @@ export default function EntityDirectoryClient({
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60">
+                <tbody className="divide-y divide-border-subtle">
                   {entities.map((item) => {
                     const hasAvatar = Boolean(item.avatar_url);
                     const hasBlocks = item.profile_blocks_count > 0;
@@ -156,12 +156,12 @@ export default function EntityDirectoryClient({
                     return (
                       <tr
                         key={item.id}
-                        className="hover:bg-slate-800/40 transition-colors group"
+                        className="hover:bg-elevated/40 transition-colors group"
                       >
                         {/* Avatar & Identification */}
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-3">
-                            <div className="relative w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden shrink-0 flex items-center justify-center">
+                            <div className="relative w-10 h-10 rounded-xl bg-canvas border border-border-subtle overflow-hidden shrink-0 flex items-center justify-center">
                               {item.avatar_url ? (
                                 <Image
                                   src={item.avatar_url}
@@ -172,14 +172,14 @@ export default function EntityDirectoryClient({
                                   className="object-cover"
                                 />
                               ) : (
-                                <User className="w-4 h-4 text-slate-600" />
+                                <User className="w-4 h-4 text-content-muted" />
                               )}
                             </div>
                             <div className="min-w-0">
                               <div className="flex items-center gap-2">
                                 <Link
                                   href={`/entities/${item.id}`}
-                                  className="font-bold text-slate-200 hover:text-blue-400 transition-colors truncate text-sm"
+                                  className="font-bold text-content-primary hover:text-brand transition-colors truncate text-sm"
                                 >
                                   {item.name}
                                 </Link>
@@ -195,7 +195,7 @@ export default function EntityDirectoryClient({
                                   </span>
                                 )}
                               </div>
-                              <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                              <p className="text-[11px] text-content-muted truncate mt-0.5">
                                 {item.title_role || `/${item.slug}`}
                               </p>
                             </div>
@@ -204,7 +204,7 @@ export default function EntityDirectoryClient({
 
                         {/* Category */}
                         <td className="py-3.5 px-4">
-                          <span className="font-mono text-[11px] text-slate-400 capitalize">
+                          <span className="font-mono text-[11px] text-content-secondary capitalize">
                             {item.category.replace("_", " ")}
                           </span>
                         </td>
@@ -219,12 +219,12 @@ export default function EntityDirectoryClient({
                               </span>
                             )}
                             {!hasAvatar && (
-                              <span className="px-2 py-0.5 rounded bg-amber-950/50 text-amber-400 border border-amber-800/40 text-[10px]">
+                              <span className="px-2 py-0.5 rounded bg-amber-500/40 text-amber-800 border border-amber-800/40 text-[10px]">
                                 No Portrait
                               </span>
                             )}
                             {!hasBlocks && (
-                              <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700/60 text-[10px]">
+                              <span className="px-2 py-0.5 rounded bg-elevated text-content-muted border border-border-subtle text-[10px]">
                                 Unpopulated
                               </span>
                             )}
@@ -240,14 +240,14 @@ export default function EntityDirectoryClient({
 
                         {/* Blocks Count */}
                         <td className="py-3.5 px-4 text-center">
-                          <span className="font-mono text-slate-300 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded text-[11px]">
+                          <span className="font-mono text-content-secondary bg-canvas border border-border-subtle px-2 py-0.5 rounded text-[11px]">
                             {item.profile_blocks_count}
                           </span>
                         </td>
 
                         {/* Linked Stories Count */}
                         <td className="py-3.5 px-4 text-center">
-                          <span className="font-mono text-slate-400">
+                          <span className="font-mono text-content-secondary">
                             {item.linked_events_count}
                           </span>
                         </td>
@@ -256,7 +256,7 @@ export default function EntityDirectoryClient({
                         <td className="py-3.5 px-4 text-right">
                           <Link
                             href={`/entities/${item.id}`}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white font-semibold transition-all group-hover:border-transparent"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-elevated hover:bg-brand text-content-secondary hover:text-white font-semibold transition-all group-hover:border-transparent"
                           >
                             <span>Edit</span>
                             <ArrowRight className="w-3 h-3" />

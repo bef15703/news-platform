@@ -19,11 +19,11 @@ export function GlobalNav() {
   const pathname = usePathname();
 
   return (
-    <header className="h-14 border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50 px-6 flex items-center justify-between">
+    <header className="h-14 border-b border-border-subtle bg-surface/60 backdrop-blur-md sticky top-0 z-50 px-6 flex items-center justify-between">
       {/* Brand Identity */}
       <div className="flex items-center gap-6">
         <Link href="/" className="flex items-center gap-2.5 group">
-            <h5 className="text-sm font-black text-slate-100 flex items-center gap-1.5">
+            <h5 className="text-sm font-bold text-content-primary flex items-center gap-1.5">
               News Platform
             </h5>
         </Link>
@@ -43,11 +43,11 @@ export function GlobalNav() {
                 href={item.href}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
                   isActive
-                    ? "bg-slate-800 text-blue-400 border border-slate-700/60 shadow-sm"
-                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/80"
+                    ? "bg-elevated text-brand border border-border-strong/60 shadow-sm"
+                    : "text-content-secondary hover:text-content-primary hover:bg-elevated"
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? "text-blue-400" : "text-slate-500"}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? "text-brand" : "text-content-muted"}`} />
                 {item.label}
               </Link>
             );

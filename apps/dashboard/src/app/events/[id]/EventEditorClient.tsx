@@ -18,7 +18,7 @@ export default function EventEditorClient({
   const { state, actions } = useEventEditor(initialData, eventId);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-canvas text-content-primary flex flex-col">
       <EventEditorHeader
         eventId={eventId}
         status={state.status}
@@ -48,25 +48,25 @@ export default function EventEditorClient({
         {/* Right Column: High-Speed Editorial Inspector */}
         <div className="flex-1 overflow-y-auto p-8 space-y-6 max-w-4xl">
           <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <label className="text-xs font-bold uppercase tracking-wider text-content-secondary">
               Story Event Headline
             </label>
             <input
               type="text"
               value={state.eventTitle}
               onChange={(e) => actions.setEventTitle(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-base font-semibold focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              className="w-full bg-elevated border border-border-subtle rounded-xl px-4 py-2.5 text-base font-semibold text-content-primary focus:outline-none focus:border-border-strong"
             />
           </div>
 
           {/* Inspector Tabs */}
-          <div className="flex items-center gap-1 border-b border-slate-800 pb-3">
+          <div className="flex items-center gap-1 border-b border-border-subtle pb-3">
             <button
               onClick={() => actions.setActiveTab("story")}
               className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors ${
                 state.activeTab === "story"
-                  ? "bg-blue-600 text-white"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  ? "bg-brand text-white"
+                  : "text-content-secondary hover:text-content-primary hover:bg-elevated"
               }`}
             >
               Story & SDUI Blocks
@@ -75,8 +75,8 @@ export default function EventEditorClient({
               onClick={() => actions.setActiveTab("cards")}
               className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors ${
                 state.activeTab === "cards"
-                  ? "bg-blue-600 text-white"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  ? "bg-brand text-white"
+                  : "text-content-secondary hover:text-content-primary hover:bg-elevated"
               }`}
             >
               Key Points Deck ({state.cards.length})
@@ -85,8 +85,8 @@ export default function EventEditorClient({
               onClick={() => actions.setActiveTab("sources")}
               className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors ${
                 state.activeTab === "sources"
-                  ? "bg-blue-600 text-white"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  ? "bg-brand text-white"
+                  : "text-content-secondary hover:text-content-primary hover:bg-elevated"
               }`}
             >
               Wire Sources & Entities
@@ -97,7 +97,7 @@ export default function EventEditorClient({
           {state.activeTab === "story" && (
             <div className="space-y-6">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <label className="text-xs font-bold uppercase tracking-wider text-content-secondary">
                   Cover Photo URL
                 </label>
                 <input
@@ -105,12 +105,12 @@ export default function EventEditorClient({
                   value={state.coverImageUrl}
                   placeholder="https://..."
                   onChange={(e) => actions.setCoverImageUrl(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs font-mono text-slate-200 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-elevated border border-border-subtle rounded-xl px-4 py-2 text-xs font-mono text-content-primary focus:outline-none focus:border-border-strong"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <label className="text-xs font-bold uppercase tracking-wider text-content-secondary">
                   Executive Lede (1–2 Sentences)
                 </label>
                 <textarea
@@ -118,7 +118,7 @@ export default function EventEditorClient({
                   value={state.lede}
                   placeholder="A quick line conveying the essential points..."
                   onChange={(e) => actions.setLede(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500 leading-relaxed"
+                  className="w-full bg-elevated border border-border-subtle rounded-xl px-4 py-2.5 text-sm text-content-primary focus:outline-none focus:border-border-strong leading-relaxed"
                 />
               </div>
 
