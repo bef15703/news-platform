@@ -161,7 +161,7 @@ export default function EntityDirectoryClient({
                         {/* Avatar & Identification */}
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden shrink-0 flex items-center justify-center">
+                            <div className="relative w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden shrink-0 flex items-center justify-center">
                               {item.avatar_url ? (
                                 <Image
                                   src={item.avatar_url}

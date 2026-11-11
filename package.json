@@ -7,7 +7,7 @@
     "lint": "turbo run lint",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
-    "db:migrate": "docker exec -i news_postgres psql -U dev_user -d news_platform < packages/db/001_initial_schema.sql"
+    "db:migrate": "docker exec -i news_postgres psql -U dev_user -d news_platform < packages/db/migrations/001_initial_schema.sql"
   },
   "devDependencies": {
     "turbo": "^2.0.0",

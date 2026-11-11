@@ -1,7 +1,7 @@
 "server-only";
 "use server";
 
-import { db, sql, EventStatus } from "@news-platform/db";
+import { db, sql, EventStatus, SDUIBlock } from "@news-platform/db";
 import { revalidatePath } from "next/cache";
 
 export async function getEventForEditor(eventId: string) {
@@ -36,7 +36,7 @@ export async function getEventForEditor(eventId: string) {
                 : event.deck_json) || [],
             sdui_blocks: (typeof event.sdui_blocks === "string"
                 ? JSON.parse(event.sdui_blocks)
-                : event.sdui_blocks) || [],
+                : event.sdui_blocks) || []
         },
         sources,
         entities: linkedEntities.rows,
@@ -48,8 +48,10 @@ export async function updateEventDeck(
     payload: {
         title: string;
         status: EventStatus | string;
+        lede: string;
+        cover_image_url: string;
         deck_json: Record<string, unknown>[];
-        sdui_blocks: Record<string, unknown>[];
+        sdui_blocks: SDUIBlock[];
     }
 ) {
     await db
@@ -57,6 +59,8 @@ export async function updateEventDeck(
         .set({
             title: payload.title,
             status: payload.status as EventStatus,
+            lede: payload.lede,
+            cover_image_url: payload.cover_image_url,
             deck_json: JSON.stringify(payload.deck_json),
             sdui_blocks: JSON.stringify(payload.sdui_blocks),
             updated_at: new Date(),

@@ -67,6 +67,8 @@ CREATE TABLE events (
     article_markdown TEXT NOT NULL DEFAULT '',
     sdui_blocks JSONB NOT NULL DEFAULT '[]'::jsonb,
     published_at TIMESTAMPTZ,
+    lede TEXT,
+    cover_image_url TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -85,21 +87,16 @@ CREATE TABLE event_entities (
 );
 
 -- Indexes for fast querying
-
--- Fast lookup for raw article by cluster
 CREATE INDEX idx_raw_articles_cluster_id ON raw_articles(cluster_id);
 CREATE INDEX idx_raw_articles_published_at ON raw_articles(published_at DESC);
 
--- HNSW Vector Index: Fast nearest-neighbor search for semantic clustering (VECTOR 768)
 CREATE INDEX idx_raw_articles_embedding_hnsw 
 ON raw_articles 
 USING hnsw (embedding vector_cosine_ops) 
 WITH (m = 16, ef_construction = 64);
 
--- Trigram Index on Entity Names: Powers instant search autocomplete
 CREATE INDEX idx_entities_name_trgm ON entities USING gin (name gin_trgm_ops);
 CREATE INDEX idx_entities_category ON entities(category);
 CREATE INDEX idx_entities_banner_active ON entities(context_banner_active) WHERE context_banner_active = true;
 
--- Junction table index for reverse lookup (finding all events tagged with an entity)
 CREATE INDEX idx_event_entities_entity_id ON event_entities(entity_id);

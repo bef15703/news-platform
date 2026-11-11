@@ -272,6 +272,7 @@ export default function EntityEditorClient({
                 <Image
                   src={avatarUrl}
                   alt={name}
+                  fill
                   sizes="320px"
                   unoptimized
                   className="object-cover"

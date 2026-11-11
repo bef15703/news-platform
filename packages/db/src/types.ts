@@ -1,4 +1,5 @@
 import { Generated, ColumnType } from "kysely";
+import type { SDUIBlock } from "./index.js";
 
 export type EventStatus = "draft" | "in_review" | "published" | "archived";
 
@@ -136,8 +137,10 @@ export interface EventsTable {
   status: Generated<EventStatus>;
   deck_json: ColumnType<Record<string, unknown>[], string, string>;
   article_markdown: Generated<string>;
-  sdui_blocks: ColumnType<Record<string, unknown>[], string, string>;
+  sdui_blocks: ColumnType<SDUIBlock[], string | SDUIBlock[], string | SDUIBlock[]>;
   published_at: ColumnType<Date, string | Date, string | Date> | null;
+  lede: ColumnType<string | null, string | null, string | null>;
+  cover_image_url: ColumnType<string | null, string | null, string | null>;
   created_at: Generated<Date>;
   updated_at: Generated<Date>;
 }

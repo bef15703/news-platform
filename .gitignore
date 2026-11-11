@@ -4,62 +4,67 @@
 .LSOverride
 Icon
 ._*
+Thumbs.db
 
-# Node / Turborepo / Next.js
+# Package Managers & Dependencies
 node_modules/
 .pnpm-store/
-dist/
+.pnp
+.pnp.*
+
+# Turborepo & Build Outputs
 .turbo/
-.next/
+dist/
 out/
 build/
+.next/
+.vercel/
+
+# TypeScript & Compilers
 *.tsbuildinfo
-*.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+next-env.d.ts
 
-# Environment Variables & Secrets
+# Environment Variables & Credentials
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 *.pem
+*.key
 
-# Docker Local Storage
+# Local Docker & Persistence
 pgdata/
 
-# Xcode & Apple Platforms
-apps/ios/*.xcodeproj/*
-!apps/ios/*.xcodeproj/project.pbxproj
-!apps/ios/*.xcodeproj/xcshareddata/
-apps/ios/*.xcodeproj/project.xcworkspace/*
-!apps/ios/*.xcodeproj/project.xcworkspace/contents.xcworkspacedata
-apps/ios/*.xcworkspace/*
-!apps/ios/*.xcworkspace/contents.xcworkspacedata
-apps/ios/**/xcuserdata/
+# Xcode & Apple Platform Development
 DerivedData/
 .build/
 *.xcuserstate
 *.xcbkptlist
 
-# testing
-/coverage
+# Xcode schemes & state, preserve shared configurations
+apps/ios/**/xcuserdata/
+apps/ios/**/*.xcodeproj/*
+!apps/ios/**/*.xcodeproj/project.pbxproj
+!apps/ios/**/*.xcodeproj/xcshareddata/
+apps/ios/**/*.xcodeproj/project.xcworkspace/*
+!apps/ios/**/*.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+apps/ios/**/*.xcworkspace/*
+!apps/ios/**/*.xcworkspace/contents.xcworkspacedata
 
-# debug
+# Testing & Coverage
+/coverage/
+.vitest/
+
+# Logs & Debugging
+*.log
+npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# IDEs & Developer Tooling
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
